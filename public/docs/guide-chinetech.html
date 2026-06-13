@@ -1,0 +1,1390 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Guide CHINETECH - Publier et gérer le blog</title>
+    <style>
+      :root {
+        --paper: #fffaf0;
+        --paper-strong: #fff3c4;
+        --ink: #20120e;
+        --muted: #684b35;
+        --red: #ff1748;
+        --red-dark: #b10028;
+        --yellow: #ffd21a;
+        --yellow-soft: #fff1a8;
+        --line: rgba(177, 0, 40, 0.22);
+        --panel: rgba(255, 255, 255, 0.86);
+        --shadow-red: 0 0 18px rgba(255, 23, 72, 0.24), 0 0 54px rgba(255, 23, 72, 0.10);
+        --shadow-yellow: 0 0 18px rgba(255, 210, 26, 0.35), 0 0 54px rgba(255, 210, 26, 0.16);
+        --radius: 10px;
+        --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --font-display: "Arial Narrow", Impact, Haettenschweiler, sans-serif;
+        --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 3%, rgba(255, 23, 72, 0.18), transparent 28%),
+          radial-gradient(circle at 86% 8%, rgba(255, 210, 26, 0.28), transparent 24%),
+          linear-gradient(180deg, #fff7db 0%, #fffaf0 42%, #fff2ca 100%);
+        font-family: var(--font-sans);
+        line-height: 1.58;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background:
+          linear-gradient(90deg, rgba(255, 23, 72, 0.08) 1px, transparent 1px),
+          linear-gradient(rgba(255, 210, 26, 0.16) 1px, transparent 1px);
+        background-size: 34px 34px;
+        mask-image: linear-gradient(180deg, #000, transparent 72%);
+        pointer-events: none;
+      }
+
+      a {
+        color: var(--red-dark);
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+      }
+
+      code {
+        border: 1px solid rgba(177, 0, 40, 0.18);
+        border-radius: 4px;
+        background: #fff8dc;
+        color: #6d0018;
+        padding: 0.12em 0.34em;
+        font-family: var(--font-mono);
+        font-size: 0.94em;
+      }
+
+      pre {
+        overflow-x: auto;
+        border: 1px solid rgba(177, 0, 40, 0.24);
+        border-radius: var(--radius);
+        background: #2a070e;
+        color: #fff5c7;
+        padding: 18px;
+        white-space: pre-wrap;
+        box-shadow: var(--shadow-red);
+      }
+
+      pre code {
+        border: 0;
+        background: transparent;
+        color: inherit;
+        padding: 0;
+      }
+
+      .document {
+        width: min(1120px, calc(100% - 36px));
+        margin: 0 auto;
+        padding: 28px 0 64px;
+      }
+
+      .cover {
+        position: relative;
+        overflow: hidden;
+        border: 2px solid rgba(177, 0, 40, 0.30);
+        border-radius: 18px;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 244, 188, 0.92)),
+          radial-gradient(circle at 80% 20%, rgba(255, 23, 72, 0.22), transparent 24%);
+        padding: clamp(28px, 6vw, 70px);
+        box-shadow: var(--shadow-yellow), inset 0 0 0 1px rgba(255, 255, 255, 0.82);
+      }
+
+      .cover::after {
+        content: "";
+        position: absolute;
+        right: -80px;
+        top: -140px;
+        width: 360px;
+        height: 360px;
+        border: 28px solid rgba(255, 23, 72, 0.18);
+        border-radius: 50%;
+        box-shadow: 0 0 56px rgba(255, 23, 72, 0.22);
+      }
+
+      .kicker {
+        margin: 0 0 14px;
+        color: var(--red-dark);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: var(--font-display);
+        letter-spacing: 0;
+        line-height: 0.98;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 840px;
+        font-size: clamp(54px, 8vw, 112px);
+        text-shadow:
+          0 0 12px rgba(255, 210, 26, 0.74),
+          0 0 26px rgba(255, 23, 72, 0.20);
+      }
+
+      .cover__subtitle {
+        max-width: 760px;
+        margin: 26px 0 0;
+        color: var(--muted);
+        font-size: clamp(18px, 2.2vw, 24px);
+      }
+
+      .cover__meta {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 34px;
+      }
+
+      .meta-card {
+        border: 1px solid rgba(177, 0, 40, 0.20);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.70);
+        padding: 14px;
+      }
+
+      .meta-card b {
+        display: block;
+        color: var(--red-dark);
+        font-family: var(--font-mono);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .meta-card span {
+        display: block;
+        margin-top: 5px;
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      .notice {
+        margin-top: 20px;
+        border-left: 5px solid var(--red);
+        border-radius: var(--radius);
+        background: rgba(255, 239, 161, 0.82);
+        padding: 16px 18px;
+        box-shadow: var(--shadow-yellow);
+      }
+
+      .notice strong {
+        color: var(--red-dark);
+      }
+
+      .toc,
+      .chapter,
+      .quick-card,
+      .checklist,
+      .prompt-box,
+      .glossary {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel);
+        box-shadow: 0 8px 28px rgba(95, 39, 0, 0.08);
+      }
+
+      .toc {
+        margin-top: 28px;
+        padding: 24px;
+      }
+
+      .toc h2,
+      .chapter h2 {
+        color: var(--red-dark);
+        font-size: clamp(30px, 4vw, 50px);
+        text-shadow: 0 0 16px rgba(255, 210, 26, 0.72);
+      }
+
+      .toc ol {
+        columns: 2;
+        gap: 40px;
+        margin: 18px 0 0;
+        padding-left: 24px;
+      }
+
+      .toc li {
+        break-inside: avoid;
+        margin-bottom: 8px;
+        font-weight: 800;
+      }
+
+      .chapter {
+        margin-top: 30px;
+        padding: clamp(22px, 4vw, 42px);
+      }
+
+      .chapter h2 {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+
+      .chapter h2::before {
+        content: "//";
+        color: var(--yellow);
+        text-shadow: 0 0 10px var(--red);
+      }
+
+      .chapter h3 {
+        margin: 28px 0 12px;
+        color: #6d0018;
+        font-size: 27px;
+      }
+
+      .lead {
+        max-width: 860px;
+        margin: 0 0 18px;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      .grid--three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .quick-card {
+        padding: 18px;
+      }
+
+      .quick-card h3 {
+        margin-top: 0;
+      }
+
+      .quick-card p:last-child,
+      .quick-card ul:last-child,
+      .quick-card ol:last-child {
+        margin-bottom: 0;
+      }
+
+      .label {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        border: 1px solid currentColor;
+        border-radius: 999px;
+        background: #fff7d2;
+        color: var(--red-dark);
+        padding: 4px 10px;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .label--yellow {
+        background: #fff1a8;
+        color: #6b5000;
+      }
+
+      table {
+        width: 100%;
+        margin: 18px 0;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: var(--radius);
+        background: #fffdf4;
+      }
+
+      th,
+      td {
+        border: 1px solid rgba(177, 0, 40, 0.18);
+        padding: 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: linear-gradient(90deg, #ff1748, #ffb300);
+        color: #fff;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      ol,
+      ul {
+        padding-left: 24px;
+      }
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      .checklist {
+        margin-top: 16px;
+        padding: 18px;
+        background:
+          linear-gradient(90deg, rgba(255, 23, 72, 0.05), rgba(255, 210, 26, 0.12)),
+          #fffdf4;
+      }
+
+      .checklist li {
+        list-style: none;
+        position: relative;
+        margin-bottom: 10px;
+        padding-left: 30px;
+      }
+
+      .checklist li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.35em;
+        width: 16px;
+        height: 16px;
+        border: 2px solid var(--red);
+        border-radius: 4px;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(255, 23, 72, 0.28);
+      }
+
+      .prompt-box {
+        margin-top: 16px;
+        padding: 18px;
+        background: #fff8dc;
+      }
+
+      .prompt-box h4 {
+        margin: 0 0 10px;
+        color: var(--red-dark);
+        font-family: var(--font-mono);
+        text-transform: uppercase;
+      }
+
+      .do-dont {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .do,
+      .dont {
+        border-radius: var(--radius);
+        padding: 16px;
+      }
+
+      .do {
+        border: 1px solid rgba(82, 120, 0, 0.28);
+        background: #fbffe6;
+      }
+
+      .dont {
+        border: 1px solid rgba(177, 0, 40, 0.30);
+        background: #fff0f2;
+      }
+
+      .small {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .page-break {
+        break-before: page;
+      }
+
+      .footer-note {
+        margin-top: 30px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 780px) {
+        .cover__meta,
+        .grid,
+        .grid--three,
+        .do-dont {
+          grid-template-columns: 1fr;
+        }
+
+        .toc ol {
+          columns: 1;
+        }
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 12mm;
+        }
+
+        html {
+          scroll-behavior: auto;
+        }
+
+        body {
+          background: #fffaf0;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        body::before {
+          opacity: 0.24;
+        }
+
+        .document {
+          width: 100%;
+          padding: 0;
+        }
+
+        .cover,
+        .chapter,
+        .toc {
+          box-shadow: none;
+          break-inside: avoid;
+        }
+
+        .chapter {
+          margin-top: 14mm;
+        }
+
+        a {
+          color: #7b001b;
+        }
+
+        .no-print {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="document">
+      <section class="cover">
+        <p class="kicker">Guide pédagogique pour équipe non technique</p>
+        <h1>Publier et gérer CHINETECH</h1>
+        <p class="cover__subtitle">
+          Comprendre le rôle de GitHub, Netlify, Decap CMS, Identity, Git Gateway, Astro et des assistants IA.
+          Ce document explique quoi faire, pourquoi le faire, et quoi éviter pour gérer le blog sereinement.
+        </p>
+
+        <div class="cover__meta">
+          <div class="meta-card">
+            <b>Site public</b>
+            <span><a href="https://chinetech.netlify.app/">chinetech.netlify.app</a></span>
+          </div>
+          <div class="meta-card">
+            <b>Administration articles</b>
+            <span><a href="https://chinetech.netlify.app/admin/">/admin/</a></span>
+          </div>
+          <div class="meta-card">
+            <b>Dépôt source</b>
+            <span><a href="https://github.com/Duflosth/chinetech-blog">Duflosth/chinetech-blog</a></span>
+          </div>
+        </div>
+
+        <div class="notice">
+          <strong>Idée centrale :</strong> une personne non technique n'a pas besoin de modifier du code pour publier.
+          Elle doit surtout utiliser le CMS sur <code>/admin/</code>. GitHub et Netlify travaillent en arrière-plan.
+        </div>
+      </section>
+
+      <section class="toc" aria-label="Sommaire">
+        <h2>Sommaire</h2>
+        <ol>
+          <li><a href="#vue-ensemble">Vue d'ensemble</a></li>
+          <li><a href="#roles">Rôles et accès</a></li>
+          <li><a href="#onboarding">Ajouter une personne non technique</a></li>
+          <li><a href="#services">Les services expliqués simplement</a></li>
+          <li><a href="#github">GitHub sans jargon</a></li>
+          <li><a href="#netlify">Netlify, déploiement et comptes</a></li>
+          <li><a href="#cms">Decap CMS et création d'articles</a></li>
+          <li><a href="#articles">Méthode éditoriale CHINETECH</a></li>
+          <li><a href="#llm">Que demander à un LLM</a></li>
+          <li><a href="#code">Comment utiliser le code sans se perdre</a></li>
+          <li><a href="#newsletter">Newsletter et formulaires</a></li>
+          <li><a href="#securite">Sécurité et bonnes pratiques</a></li>
+          <li><a href="#problemes">Problèmes fréquents</a></li>
+          <li><a href="#checklists">Checklists prêtes à l'emploi</a></li>
+        </ol>
+      </section>
+
+      <section class="chapter" id="vue-ensemble">
+        <h2>Vue d'ensemble</h2>
+        <p class="lead">
+          CHINETECH est un site statique : les pages sont fabriquées à l'avance, puis servies très rapidement.
+          Cette approche est simple, peu coûteuse, robuste, et adaptée à un blog éditorial.
+        </p>
+
+        <div class="grid grid--three">
+          <div class="quick-card">
+            <span class="label">Écrire</span>
+            <h3>Decap CMS</h3>
+            <p>Interface visuelle pour créer les articles, choisir les tags, ajouter une image, garder un brouillon ou publier.</p>
+          </div>
+          <div class="quick-card">
+            <span class="label label--yellow">Stocker</span>
+            <h3>GitHub</h3>
+            <p>Bibliothèque officielle du projet. Chaque article et chaque fichier du site y sont versionnés.</p>
+          </div>
+          <div class="quick-card">
+            <span class="label">Afficher</span>
+            <h3>Netlify</h3>
+            <p>Héberge le site, reconstruit les pages après une modification, gère les formulaires et les accès éditeurs.</p>
+          </div>
+        </div>
+
+        <h3>Le parcours d'un article</h3>
+        <ol>
+          <li>L'éditeur se connecte à <code>/admin/</code>.</li>
+          <li>Il crée ou modifie un article dans Decap CMS.</li>
+          <li>Decap enregistre le changement dans GitHub via Git Gateway.</li>
+          <li>Netlify détecte le changement, lance un build, puis publie le nouveau site.</li>
+          <li>L'article apparaît sur le site si <code>draft</code> vaut <code>false</code>.</li>
+        </ol>
+
+        <div class="notice">
+          <strong>À retenir :</strong> le CMS ne modifie pas directement le site visible. Il modifie les fichiers dans GitHub.
+          Netlify reconstruit ensuite le site. Il peut donc y avoir un délai de 1 à 3 minutes.
+        </div>
+      </section>
+
+      <section class="chapter page-break" id="roles">
+        <h2>Rôles et accès</h2>
+        <p class="lead">
+          Il y a plusieurs types de comptes. C'est souvent la partie la plus confuse, donc il faut bien distinguer les rôles.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Rôle</th>
+              <th>Compte nécessaire</th>
+              <th>Ce que la personne peut faire</th>
+              <th>Conseil</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Propriétaire du projet</td>
+              <td>GitHub + Netlify dashboard</td>
+              <td>Configurer le site, gérer les builds, inviter les éditeurs, voir les formulaires.</td>
+              <td>À garder limité à une ou deux personnes fiables.</td>
+            </tr>
+            <tr>
+              <td>Éditeur non technique</td>
+              <td>Netlify Identity seulement</td>
+              <td>Se connecter au CMS, créer et modifier des articles.</td>
+              <td>Le meilleur choix pour quelqu'un qui ne code pas.</td>
+            </tr>
+            <tr>
+              <td>Contributeur GitHub</td>
+              <td>Compte GitHub</td>
+              <td>Modifier les fichiers du projet, proposer des changements, accéder à l'historique.</td>
+              <td>Utile si la personne comprend au moins les bases de GitHub.</td>
+            </tr>
+            <tr>
+              <td>Visiteur newsletter</td>
+              <td>Aucun compte</td>
+              <td>Lire le site et laisser son email dans le formulaire.</td>
+              <td>Ses données arrivent dans Netlify Forms.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>La règle simple</h3>
+        <div class="do-dont">
+          <div class="do">
+            <h3>À faire</h3>
+            <ul>
+              <li>Pour écrire des articles : inviter dans Netlify Identity.</li>
+              <li>Pour relire ou conseiller : partager le site public ou un article en brouillon exporté.</li>
+              <li>Pour toucher au code : passer par GitHub et idéalement par une personne technique.</li>
+            </ul>
+          </div>
+          <div class="dont">
+            <h3>À éviter</h3>
+            <ul>
+              <li>Donner ton mot de passe Netlify ou GitHub.</li>
+              <li>Ajouter un non-technicien comme propriétaire Netlify sans besoin clair.</li>
+              <li>Partager un lien d'invitation ou de récupération dans un chat public.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="onboarding">
+        <h2>Ajouter une personne non technique</h2>
+        <p class="lead">
+          Pour une personne qui doit seulement écrire ou corriger des articles, le plus propre est de l'ajouter comme
+          utilisateur Netlify Identity, pas comme membre Netlify et pas forcément comme collaborateur GitHub.
+        </p>
+
+        <h3>Procédure recommandée</h3>
+        <ol>
+          <li>Ouvrir Netlify : <a href="https://app.netlify.com/">app.netlify.com</a>.</li>
+          <li>Aller sur le site CHINETECH.</li>
+          <li>Ouvrir <strong>Identity</strong>.</li>
+          <li>Vérifier que les inscriptions sont en mode <strong>Invite only</strong>.</li>
+          <li>Cliquer sur <strong>Invite users</strong>.</li>
+          <li>Saisir l'email de la personne.</li>
+          <li>La personne reçoit un email d'invitation.</li>
+          <li>Elle clique sur <strong>Accept the invite</strong>.</li>
+          <li>Elle choisit son propre mot de passe.</li>
+          <li>Elle va ensuite sur <a href="https://chinetech.netlify.app/admin/">chinetech.netlify.app/admin/</a>.</li>
+        </ol>
+
+        <div class="notice">
+          <strong>Important :</strong> si l'invitation ne marche pas, renvoyer une nouvelle invitation.
+          Les liens contiennent un token temporaire. Un ancien lien peut expirer, être consommé, ou être bloqué si trop de demandes ont été faites.
+        </div>
+
+        <h3>Message prêt à envoyer à l'éditeur</h3>
+        <pre><code>Bonjour,
+
+Tu vas recevoir une invitation Netlify pour accéder à l'interface d'édition du blog CHINETECH.
+
+1. Ouvre l'email envoyé par no-reply@netlify.com.
+2. Clique sur "Accept the invite".
+3. Choisis ton propre mot de passe.
+4. Ensuite, connecte-toi ici :
+   https://chinetech.netlify.app/admin/
+
+Tu n'as pas besoin de compte GitHub pour écrire des articles dans le CMS.
+Si le lien ne fonctionne pas, préviens-moi : je renverrai une nouvelle invitation.</code></pre>
+
+        <h3>Test d'onboarding à faire ensemble</h3>
+        <ul class="checklist">
+          <li>La personne peut ouvrir <code>/admin/</code>.</li>
+          <li>Elle peut se connecter avec son email et son mot de passe.</li>
+          <li>Elle voit la collection <strong>Articles</strong>.</li>
+          <li>Elle crée un article test avec <code>draft: true</code>.</li>
+          <li>Elle sait sauvegarder sans publier.</li>
+          <li>Elle sait mettre <code>draft: false</code> quand l'article est prêt.</li>
+        </ul>
+      </section>
+
+      <section class="chapter page-break" id="services">
+        <h2>Les services expliqués simplement</h2>
+        <p class="lead">
+          Chaque service a une mission précise. Le but est d'éviter de tout mélanger.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Image mentale</th>
+              <th>Pourquoi on l'utilise</th>
+              <th>Qui y touche ?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Astro</td>
+              <td>La machine qui fabrique les pages.</td>
+              <td>Transformer des fichiers et articles en site rapide.</td>
+              <td>Plutôt technique.</td>
+            </tr>
+            <tr>
+              <td>GitHub</td>
+              <td>Le classeur officiel du projet.</td>
+              <td>Garder l'historique, éviter de perdre le travail, déclencher Netlify.</td>
+              <td>Propriétaire, développeur, éventuellement contributeur avancé.</td>
+            </tr>
+            <tr>
+              <td>Netlify</td>
+              <td>L'imprimeur et l'hébergeur.</td>
+              <td>Publier le site, gérer les builds, les formulaires et les comptes éditeurs.</td>
+              <td>Propriétaire du site.</td>
+            </tr>
+            <tr>
+              <td>Decap CMS</td>
+              <td>Le tableau de bord éditorial.</td>
+              <td>Créer des articles sans manipuler GitHub directement.</td>
+              <td>Éditeurs.</td>
+            </tr>
+            <tr>
+              <td>Netlify Identity</td>
+              <td>La porte d'entrée du CMS.</td>
+              <td>Autoriser seulement les personnes invitées à publier.</td>
+              <td>Propriétaire pour les invitations, éditeurs pour se connecter.</td>
+            </tr>
+            <tr>
+              <td>Git Gateway</td>
+              <td>Le pont entre CMS et GitHub.</td>
+              <td>Permettre à Decap CMS d'enregistrer les articles dans GitHub.</td>
+              <td>À configurer une fois, puis oublier.</td>
+            </tr>
+            <tr>
+              <td>Netlify Forms</td>
+              <td>La boîte de réception des emails newsletter.</td>
+              <td>Recevoir les inscriptions sans serveur ni code secret côté navigateur.</td>
+              <td>Propriétaire ou responsable marketing.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="chapter" id="github">
+        <h2>GitHub sans jargon</h2>
+        <p class="lead">
+          GitHub conserve les fichiers du site. Même si une personne écrit via le CMS, le résultat finit dans GitHub.
+        </p>
+
+        <h3>Créer un compte GitHub</h3>
+        <ol>
+          <li>Aller sur <a href="https://github.com/">github.com</a>.</li>
+          <li>Cliquer sur <strong>Sign up</strong>.</li>
+          <li>Choisir un email fiable, idéalement le même que pour les projets professionnels.</li>
+          <li>Choisir un nom d'utilisateur lisible.</li>
+          <li>Vérifier son email.</li>
+          <li>Activer la double authentification si GitHub le demande ou la propose.</li>
+        </ol>
+
+        <h3>Faut-il créer un compte GitHub pour l'éditeur non technique ?</h3>
+        <p>
+          Pas nécessaire pour publier via Decap CMS. Le compte utile pour lui est Netlify Identity.
+          Le compte GitHub devient utile si la personne doit relire des fichiers, ouvrir des tickets, ou intervenir directement sur le dépôt.
+        </p>
+
+        <h3>Inviter quelqu'un sur le repo GitHub</h3>
+        <ol>
+          <li>Ouvrir <a href="https://github.com/Duflosth/chinetech-blog">github.com/Duflosth/chinetech-blog</a>.</li>
+          <li>Cliquer sur <strong>Settings</strong>.</li>
+          <li>Aller dans <strong>Collaborators</strong> ou <strong>Collaborators & teams</strong>.</li>
+          <li>Cliquer sur <strong>Add people</strong>.</li>
+          <li>Rechercher son nom d'utilisateur GitHub.</li>
+          <li>Choisir le rôle le plus faible qui suffit.</li>
+        </ol>
+
+        <div class="notice">
+          <strong>Conseil concret :</strong> pour une personne non technique, ne commence pas par GitHub.
+          Commence par le CMS. GitHub est le filet de sécurité et l'historique, pas l'outil d'écriture quotidien.
+        </div>
+
+        <h3>Les mots GitHub à connaître</h3>
+        <div class="glossary">
+          <table>
+            <tbody>
+              <tr>
+                <td><strong>Repository / repo</strong></td>
+                <td>Le dossier officiel du projet.</td>
+              </tr>
+              <tr>
+                <td><strong>Commit</strong></td>
+                <td>Une sauvegarde datée d'un changement.</td>
+              </tr>
+              <tr>
+                <td><strong>Branch</strong></td>
+                <td>Une version parallèle du projet. Ici, la branche de production est <code>master</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>Pull request</strong></td>
+                <td>Une proposition de changement à relire avant fusion.</td>
+              </tr>
+              <tr>
+                <td><strong>Markdown</strong></td>
+                <td>Format simple pour écrire du texte structuré : titres, listes, liens, gras.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="chapter page-break" id="netlify">
+        <h2>Netlify, déploiement et comptes</h2>
+        <p class="lead">
+          Netlify héberge le site public. Quand GitHub change, Netlify reconstruit le site et publie une nouvelle version.
+        </p>
+
+        <h3>Ce qui doit rester configuré</h3>
+        <ul class="checklist">
+          <li>Site Netlify connecté au repo <code>Duflosth/chinetech-blog</code>.</li>
+          <li>Branche de production : <code>master</code>.</li>
+          <li>Build command : <code>npm run build</code>.</li>
+          <li>Publish directory : <code>dist</code>.</li>
+          <li>Identity activé.</li>
+          <li>Registration preferences : <strong>Invite only</strong>.</li>
+          <li>Git Gateway activé.</li>
+          <li>Forms detection activé pour la newsletter.</li>
+        </ul>
+
+        <h3>Les deux types de comptes Netlify</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>À quoi ça sert</th>
+              <th>Pour qui</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Compte Netlify dashboard</td>
+              <td>Gérer le site, les builds, les domaines, Identity, Forms, Git Gateway.</td>
+              <td>Propriétaire du projet.</td>
+            </tr>
+            <tr>
+              <td>Compte Netlify Identity</td>
+              <td>Se connecter au CMS du site.</td>
+              <td>Éditeur non technique.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          Un éditeur n'a pas besoin de compte dashboard Netlify. Il a besoin d'un compte Identity du site,
+          créé via une invitation.
+        </p>
+
+        <h3>Après une modification, combien de temps attendre ?</h3>
+        <p>
+          En général, Netlify prend une à quelques minutes pour reconstruire le site.
+          Si l'article n'apparaît pas immédiatement, vérifier d'abord le champ <code>draft</code>, puis l'onglet <strong>Deploys</strong> dans Netlify.
+        </p>
+      </section>
+
+      <section class="chapter" id="cms">
+        <h2>Decap CMS et création d'articles</h2>
+        <p class="lead">
+          Le CMS est l'interface la plus importante pour une personne non technique.
+          Son adresse est <a href="https://chinetech.netlify.app/admin/">https://chinetech.netlify.app/admin/</a>.
+        </p>
+
+        <h3>Créer un article pas à pas</h3>
+        <ol>
+          <li>Ouvrir <code>/admin/</code>.</li>
+          <li>Se connecter avec l'email invité et le mot de passe choisi.</li>
+          <li>Cliquer sur <strong>Articles</strong>.</li>
+          <li>Cliquer sur <strong>New Article</strong> ou équivalent.</li>
+          <li>Remplir le titre.</li>
+          <li>Rédiger une description courte.</li>
+          <li>Choisir la date.</li>
+          <li>Mettre l'auteur.</li>
+          <li>Ajouter les tags.</li>
+          <li>Ajouter une image de couverture si disponible.</li>
+          <li>Garder <code>draft: true</code> tant que ce n'est pas prêt.</li>
+          <li>Écrire le contenu dans le champ Markdown.</li>
+          <li>Sauvegarder.</li>
+          <li>Quand tout est relu, passer <code>draft</code> à <code>false</code>.</li>
+          <li>Attendre le déploiement Netlify.</li>
+        </ol>
+
+        <h3>À quoi servent les champs ?</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Champ</th>
+              <th>Usage</th>
+              <th>Conseil</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>title</code></td>
+              <td>Titre visible dans les cartes et la page article.</td>
+              <td>Clair, concret, pas trop long.</td>
+            </tr>
+            <tr>
+              <td><code>description</code></td>
+              <td>Résumé court de l'article.</td>
+              <td>Une ou deux phrases. Dire pourquoi l'article mérite d'être lu.</td>
+            </tr>
+            <tr>
+              <td><code>date</code></td>
+              <td>Date de publication.</td>
+              <td>La page articles trie du plus récent au plus ancien.</td>
+            </tr>
+            <tr>
+              <td><code>author</code></td>
+              <td>Nom de l'auteur.</td>
+              <td>Garder un format stable : "Rédaction CHINETECH" ou prénom + nom.</td>
+            </tr>
+            <tr>
+              <td><code>tags</code></td>
+              <td>Catégories éditoriales.</td>
+              <td>Limiter à 2 ou 3 tags utiles.</td>
+            </tr>
+            <tr>
+              <td><code>cover</code></td>
+              <td>Image de couverture.</td>
+              <td>Utiliser une image horizontale, claire, sans texte minuscule.</td>
+            </tr>
+            <tr>
+              <td><code>draft</code></td>
+              <td>Masque ou publie l'article.</td>
+              <td><code>true</code> = brouillon invisible. <code>false</code> = publié.</td>
+            </tr>
+            <tr>
+              <td><code>featured</code></td>
+              <td>Met l'article dans la section "À la une".</td>
+              <td>Réserver à 1 à 4 articles importants.</td>
+            </tr>
+            <tr>
+              <td><code>featuredRank</code></td>
+              <td>Ordre des articles à la une.</td>
+              <td><code>1</code> est prioritaire, puis <code>2</code>, etc.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Mini-guide Markdown</h3>
+        <pre><code># Titre principal
+
+## Grand titre de section
+
+### Sous-section
+
+Texte normal avec **gras** si besoin.
+
+- Point important
+- Deuxième point
+
+[Texte du lien](https://example.com)
+
+> Citation ou idée à mettre en avant.</code></pre>
+      </section>
+
+      <section class="chapter page-break" id="articles">
+        <h2>Méthode éditoriale CHINETECH</h2>
+        <p class="lead">
+          Le blog doit donner une impression d'analyse, pas de bruit d'actualité. Chaque article doit aider le lecteur à comprendre une dynamique.
+        </p>
+
+        <h3>Structure conseillée</h3>
+        <ol>
+          <li><strong>Angle :</strong> quelle question l'article résout-il ?</li>
+          <li><strong>Contexte :</strong> pourquoi le sujet compte maintenant ?</li>
+          <li><strong>Analyse :</strong> quels mécanismes économiques, technologiques ou politiques sont à l'oeuvre ?</li>
+          <li><strong>Conséquences :</strong> qui gagne, qui perd, qui doit surveiller quoi ?</li>
+          <li><strong>À suivre :</strong> 3 signaux concrets à observer.</li>
+        </ol>
+
+        <h3>Checklist avant publication</h3>
+        <ul class="checklist">
+          <li>Le titre est compréhensible sans contexte.</li>
+          <li>La description donne envie sans survendre.</li>
+          <li>Le premier paragraphe explique pourquoi le sujet compte.</li>
+          <li>Chaque affirmation factuelle importante est vérifiée.</li>
+          <li>Les dates sont exactes.</li>
+          <li>Les noms d'entreprises sont bien orthographiés.</li>
+          <li>Les acronymes sont expliqués à la première mention.</li>
+          <li>L'article ne contient pas de promesse vague comme "révolutionnaire" sans preuve.</li>
+          <li>Le champ <code>draft</code> reste <code>true</code> jusqu'à validation.</li>
+          <li>Après publication, l'article est vérifié sur mobile et desktop.</li>
+        </ul>
+
+        <h3>Conseils de style</h3>
+        <div class="grid">
+          <div class="quick-card">
+            <h3>Bon ton</h3>
+            <ul>
+              <li>Précis, calme, analytique.</li>
+              <li>Expliquer les enjeux sans jargon inutile.</li>
+              <li>Préférer les mécanismes aux superlatifs.</li>
+              <li>Dire ce qu'on sait, ce qu'on ne sait pas, et ce qu'il faut surveiller.</li>
+            </ul>
+          </div>
+          <div class="quick-card">
+            <h3>À éviter</h3>
+            <ul>
+              <li>Copier-coller un communiqué.</li>
+              <li>Écrire uniquement à partir d'un buzz LinkedIn/X.</li>
+              <li>Publier une info récente sans date ni source.</li>
+              <li>Utiliser une image sans droit ou sans origine claire.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Tags recommandés</h3>
+        <p>
+          Utiliser des tags stables permet de garder une ligne éditoriale claire :
+          <code>Tech</code>, <code>IA</code>, <code>Innovation</code>, <code>Business</code>, <code>Société</code>,
+          <code>Mobilité</code>, <code>Semi-conducteurs</code>, <code>Géopolitique</code>, <code>Startups</code>.
+        </p>
+      </section>
+
+      <section class="chapter" id="llm">
+        <h2>Que demander à un LLM</h2>
+        <p class="lead">
+          Un LLM est utile pour structurer, reformuler, trouver des angles et vérifier la clarté.
+          Il ne doit pas être utilisé comme source unique de vérité.
+        </p>
+
+        <h3>Règles d'or</h3>
+        <ul class="checklist">
+          <li>Ne jamais donner de mot de passe, token, lien d'invitation ou lien de récupération.</li>
+          <li>Demander au LLM de signaler les incertitudes.</li>
+          <li>Vérifier séparément les faits récents.</li>
+          <li>Demander une version Markdown prête à coller dans le CMS.</li>
+          <li>Garder la décision éditoriale humaine.</li>
+        </ul>
+
+        <h3>Prompt pour trouver des idées d'articles</h3>
+        <div class="prompt-box">
+          <h4>À copier-coller</h4>
+          <pre><code>Tu es rédacteur en chef de CHINETECH, un blog français qui analyse la tech chinoise.
+
+Propose 10 angles d'articles sur [SUJET].
+Pour chaque angle, donne :
+- un titre clair ;
+- la question centrale ;
+- pourquoi c'est important maintenant ;
+- 3 points à vérifier avant publication ;
+- le public cible.
+
+Ne fabrique pas de faits. Si une information doit être vérifiée, indique-le explicitement.</code></pre>
+        </div>
+
+        <h3>Prompt pour rédiger un brouillon</h3>
+        <div class="prompt-box">
+          <h4>À copier-coller</h4>
+          <pre><code>Rédige un brouillon d'article CHINETECH en français sur :
+[SUJET]
+
+Angle :
+[ANGLE]
+
+Contraintes :
+- ton analytique, précis, non sensationnaliste ;
+- expliquer les termes techniques ;
+- structure avec introduction, 3 sections, conclusion "À suivre" ;
+- inclure une liste de points à vérifier ;
+- ne pas inventer de chiffres ;
+- écrire en Markdown compatible CMS.
+
+Format final :
+1. titre ;
+2. description courte ;
+3. tags proposés ;
+4. corps de l'article en Markdown.</code></pre>
+        </div>
+
+        <h3>Prompt pour améliorer un article</h3>
+        <div class="prompt-box">
+          <h4>À copier-coller</h4>
+          <pre><code>Relis cet article pour CHINETECH.
+
+Objectifs :
+- rendre le texte plus clair pour un lecteur non spécialiste ;
+- supprimer les répétitions ;
+- repérer les affirmations qui demandent une source ;
+- proposer un meilleur titre si nécessaire ;
+- garder le sens et ne pas inventer de nouvelles informations.
+
+Article :
+[COLLER LE TEXTE]</code></pre>
+        </div>
+
+        <h3>Prompt pour demander de l'aide sur le code</h3>
+        <div class="prompt-box">
+          <h4>À copier-coller à Codex ou un assistant de code</h4>
+          <pre><code>Dans le repo Duflosth/chinetech-blog, aide-moi à faire cette modification :
+[DÉCRIRE LA MODIFICATION]
+
+Contraintes :
+- garder le site statique Astro ;
+- ne pas casser Decap CMS sur /admin ;
+- ne pas casser Netlify Forms ;
+- lancer npm run build ;
+- expliquer les fichiers modifiés ;
+- committer et pousser si tout est OK.</code></pre>
+        </div>
+      </section>
+
+      <section class="chapter page-break" id="code">
+        <h2>Comment utiliser le code sans se perdre</h2>
+        <p class="lead">
+          Une personne non technique n'a pas besoin de lire tout le code. Mais comprendre les fichiers principaux aide à demander les bonnes modifications.
+        </p>
+
+        <h3>Carte du projet</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Chemin</th>
+              <th>Ce que c'est</th>
+              <th>Quand y toucher</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>src/content/articles/</code></td>
+              <td>Articles Markdown.</td>
+              <td>Via CMS de préférence.</td>
+            </tr>
+            <tr>
+              <td><code>public/admin/config.yml</code></td>
+              <td>Configuration Decap CMS.</td>
+              <td>Si on ajoute des champs CMS.</td>
+            </tr>
+            <tr>
+              <td><code>src/pages/index.astro</code></td>
+              <td>Homepage.</td>
+              <td>Si on change la structure de la page d'accueil.</td>
+            </tr>
+            <tr>
+              <td><code>src/pages/articles/</code></td>
+              <td>Liste et pages articles.</td>
+              <td>Si on change la présentation des articles.</td>
+            </tr>
+            <tr>
+              <td><code>src/styles/global.css</code></td>
+              <td>Styles du site.</td>
+              <td>Si on change le design.</td>
+            </tr>
+            <tr>
+              <td><code>public/assets/</code></td>
+              <td>Images publiques.</td>
+              <td>Si on remplace des assets globaux.</td>
+            </tr>
+            <tr>
+              <td><code>netlify.toml</code></td>
+              <td>Instruction de build Netlify.</td>
+              <td>Rarement. Ne pas changer sans raison.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Commandes utiles pour une personne technique</h3>
+        <pre><code>npm install
+npm run dev
+npm run build
+git status
+git add .
+git commit -m "Message clair"
+git push</code></pre>
+
+        <p class="small">
+          Une personne non technique n'a pas besoin d'exécuter ces commandes. Elles sont utiles si un assistant de code ou un développeur intervient.
+        </p>
+
+        <h3>Comment demander une modification de site</h3>
+        <p>Une bonne demande contient toujours :</p>
+        <ul>
+          <li>la page concernée ;</li>
+          <li>ce qui ne va pas ;</li>
+          <li>le résultat souhaité ;</li>
+          <li>une capture d'écran si possible ;</li>
+          <li>la contrainte à ne pas casser.</li>
+        </ul>
+
+        <div class="prompt-box">
+          <h4>Exemple clair</h4>
+          <pre><code>Sur la homepage de CHINETECH, dans la section newsletter,
+je veux remplacer le texte "chaque vendredi matin" par "deux fois par mois".
+
+Ne change pas le formulaire Netlify.
+Vérifie que npm run build passe.
+Pousse sur master si tout est bon.</code></pre>
+        </div>
+      </section>
+
+      <section class="chapter" id="newsletter">
+        <h2>Newsletter et formulaires</h2>
+        <p class="lead">
+          Le formulaire newsletter utilise Netlify Forms. Cela évite de mettre un token d'emailing dans le navigateur.
+        </p>
+
+        <h3>Où voir les inscriptions ?</h3>
+        <ol>
+          <li>Ouvrir Netlify dashboard.</li>
+          <li>Aller sur le site CHINETECH.</li>
+          <li>Ouvrir <strong>Forms</strong>.</li>
+          <li>Choisir le formulaire <code>newsletter</code>.</li>
+          <li>Exporter ou traiter les emails.</li>
+        </ol>
+
+        <h3>Que faire ensuite avec les emails ?</h3>
+        <ul>
+          <li>Exporter régulièrement en CSV si la liste est petite.</li>
+          <li>Connecter plus tard à Brevo, Resend, Mailchimp, Zapier ou Make si besoin.</li>
+          <li>Informer clairement les inscrits de la fréquence d'envoi.</li>
+          <li>Prévoir un moyen de désinscription avant d'envoyer une vraie newsletter commerciale.</li>
+        </ul>
+
+        <div class="notice">
+          <strong>Conseil concret :</strong> tant que la newsletter n'est pas automatisée, noter la date de chaque export et éviter les doublons.
+        </div>
+      </section>
+
+      <section class="chapter page-break" id="securite">
+        <h2>Sécurité et bonnes pratiques</h2>
+        <p class="lead">
+          Le site est simple, mais les accès restent importants. Les erreurs les plus graves sont souvent humaines : partage de liens secrets, mots de passe faibles, mauvais rôle donné à la mauvaise personne.
+        </p>
+
+        <h3>À ne jamais partager</h3>
+        <ul class="checklist">
+          <li>Mot de passe GitHub.</li>
+          <li>Mot de passe Netlify.</li>
+          <li>Lien contenant <code>#invite_token=</code>.</li>
+          <li>Lien contenant <code>#recovery_token=</code>.</li>
+          <li>Token API GitHub, Netlify, Resend, Brevo ou autre.</li>
+          <li>Capture d'écran montrant des clés secrètes.</li>
+        </ul>
+
+        <h3>Bonnes habitudes</h3>
+        <ul>
+          <li>Utiliser un gestionnaire de mots de passe.</li>
+          <li>Activer la double authentification sur GitHub.</li>
+          <li>Garder Netlify en mode <strong>Invite only</strong>.</li>
+          <li>Retirer l'accès d'une personne qui ne collabore plus.</li>
+          <li>Relire les articles avant de passer <code>draft</code> à <code>false</code>.</li>
+          <li>Ne pas installer de dépendances ou services payants sans décision explicite.</li>
+        </ul>
+
+        <h3>Gestion des erreurs</h3>
+        <p>
+          Si un article publié contient une erreur grave, la réponse la plus simple est de retourner dans le CMS,
+          remettre <code>draft: true</code>, sauvegarder, attendre le redeploy, puis corriger calmement.
+        </p>
+      </section>
+
+      <section class="chapter" id="problemes">
+        <h2>Problèmes fréquents</h2>
+
+        <h3>Le lien d'invitation renvoie juste à l'accueil</h3>
+        <ol>
+          <li>Vérifier que l'URL est bien <code>https://chinetech.netlify.app/</code>.</li>
+          <li>Ne pas utiliser l'ancien domaine <code>legendary-sundae-f81d8a.netlify.app</code>.</li>
+          <li>Ouvrir le lien dans une fenêtre privée.</li>
+          <li>Si le lien a déjà été utilisé, renvoyer une nouvelle invitation.</li>
+          <li>Si trop d'essais ont été faits, attendre avant de renvoyer un email.</li>
+        </ol>
+
+        <h3>"Rate limit exceeded"</h3>
+        <p>
+          Cela signifie que trop d'emails d'invitation ou de récupération ont été demandés en peu de temps.
+          Attendre 30 à 60 minutes, parfois plus, puis refaire une seule demande.
+        </p>
+
+        <h3>Le CMS ne se connecte pas à GitHub</h3>
+        <ul>
+          <li>Vérifier que Git Gateway est activé dans Netlify.</li>
+          <li>Vérifier que Identity est activé.</li>
+          <li>Vérifier que l'utilisateur est bien invité.</li>
+          <li>Vérifier que <code>/admin/config.yml</code> répond bien dans le navigateur.</li>
+        </ul>
+
+        <h3>L'article n'apparaît pas sur le site</h3>
+        <ul>
+          <li>Vérifier <code>draft</code> : si c'est <code>true</code>, c'est normal qu'il soit invisible.</li>
+          <li>Vérifier la date et le titre.</li>
+          <li>Attendre le redeploy Netlify.</li>
+          <li>Dans Netlify, ouvrir <strong>Deploys</strong> et regarder si le build a échoué.</li>
+        </ul>
+
+        <h3>Le formulaire newsletter ne remonte pas</h3>
+        <ul>
+          <li>Vérifier Netlify Forms.</li>
+          <li>Vérifier que la détection des formulaires est active.</li>
+          <li>Tester avec une adresse email non jetable.</li>
+          <li>Vérifier le dossier spam si une notification email est configurée.</li>
+        </ul>
+
+        <h3>Le site affiche 404</h3>
+        <ul>
+          <li>Vérifier l'orthographe : <code>chinetech.netlify.app</code>, pas <code>chintech.netlify.app</code>.</li>
+          <li>Vérifier que le site n'a pas changé de nom.</li>
+          <li>Vérifier dans Netlify que le dernier deploy est réussi.</li>
+          <li>Vérifier que le dossier de publication est bien <code>dist</code>.</li>
+        </ul>
+      </section>
+
+      <section class="chapter page-break" id="checklists">
+        <h2>Checklists prêtes à l'emploi</h2>
+
+        <h3>Avant d'ajouter un éditeur</h3>
+        <ul class="checklist">
+          <li>Le rôle exact de la personne est clair.</li>
+          <li>Elle a besoin du CMS, pas forcément de GitHub.</li>
+          <li>Identity est en mode Invite only.</li>
+          <li>Git Gateway est activé.</li>
+          <li>Le lien <code>/admin/</code> fonctionne.</li>
+          <li>Un court appel d'onboarding est prévu.</li>
+        </ul>
+
+        <h3>Avant de publier un article</h3>
+        <ul class="checklist">
+          <li>Titre relu.</li>
+          <li>Description relue.</li>
+          <li>Corps relu.</li>
+          <li>Faits importants vérifiés.</li>
+          <li>Image utilisable légalement.</li>
+          <li>Tags cohérents.</li>
+          <li><code>draft</code> passé à <code>false</code> seulement à la fin.</li>
+          <li>Article vérifié après publication.</li>
+        </ul>
+
+        <h3>Avant de demander une modification à un assistant IA</h3>
+        <ul class="checklist">
+          <li>Dire quelle page ou quel fichier est concerné.</li>
+          <li>Dire le résultat attendu.</li>
+          <li>Dire ce qu'il ne faut pas casser.</li>
+          <li>Demander de lancer <code>npm run build</code>.</li>
+          <li>Demander un résumé des fichiers modifiés.</li>
+          <li>Ne jamais coller de secret ou de token.</li>
+        </ul>
+
+        <h3>Routine mensuelle</h3>
+        <ul class="checklist">
+          <li>Vérifier les utilisateurs Identity actifs.</li>
+          <li>Retirer les accès inutiles.</li>
+          <li>Exporter les emails newsletter si nécessaire.</li>
+          <li>Vérifier que le dernier deploy Netlify réussit.</li>
+          <li>Regarder les articles à la une et enlever ceux qui sont périmés.</li>
+          <li>Sauvegarder les décisions éditoriales importantes dans un document partagé.</li>
+        </ul>
+      </section>
+
+      <section class="chapter" id="sources">
+        <h2>Sources utiles</h2>
+        <p class="lead">
+          Ces liens sont les références officielles à consulter si l'interface évolue.
+        </p>
+
+        <ul>
+          <li>Créer un compte GitHub : <a href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">GitHub Docs</a></li>
+          <li>Gérer les collaborateurs GitHub : <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-teams-and-people-with-access-to-your-repository">GitHub Docs</a></li>
+          <li>Netlify Identity : <a href="https://docs.netlify.com/manage/security/secure-access-to-sites/identity/overview/">Netlify Docs</a></li>
+          <li>Netlify Git Gateway : <a href="https://docs.netlify.com/manage/security/secure-access-to-sites/git-gateway/">Netlify Docs</a></li>
+          <li>Netlify Forms : <a href="https://docs.netlify.com/manage/forms/setup/">Netlify Docs</a></li>
+          <li>Decap CMS : <a href="https://decapcms.org/docs/intro/">Decap CMS Docs</a></li>
+          <li>Decap Git Gateway backend : <a href="https://decapcms.org/docs/git-gateway-backend/">Decap CMS Docs</a></li>
+        </ul>
+
+        <p class="footer-note">
+          Version du document : 13 juin 2026. Pour générer un PDF : ouvrir ce fichier dans le navigateur,
+          imprimer, choisir "Enregistrer en PDF", activer les arrière-plans, format A4.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
