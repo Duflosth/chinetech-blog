@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+type Variant = 'article' | 'feature' | 'lead';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+  variant?: Variant;
+  position?: string;
+  tagVariant?: 'pink' | 'cyan' | 'red';
+}
+
+const {
+  article,
+  variant = 'article',
+  position = '66% 32%',
+  tagVariant = 'pink'
+} = Astro.props;
+
+const cover = article.data.cover || '/assets/china-tech-cyberpunk-hero.png';
+const href = `/articles/${article.id}/`;
+const formattedDate = new Intl.DateTimeFormat('fr-FR', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric'
+}).format(article.data.date).replace('.', '').toUpperCase();
+const tag = article.data.tags[0] ?? 'Tech';
+const tagClass = tagVariant === 'red' ? 'tag tag--red' : tagVariant === 'cyan' ? 'tag tag--cyan' : 'tag';
+const style = `--img: url('${cover}'); --pos: ${position};`;
+---
+
+{variant === 'article' ? (
+  <a class="article reveal" href={href} style={style}>
+    <div class="article__image"></div>
+    <div class="article__body">
+      <span class={tagClass}>{tag}</span>
+      <h3>{article.data.title}</h3>
+      <time datetime={article.data.date.toISOString()}>{formattedDate}</time>
+    </div>
+  </a>
+) : (
+  <a class:list={['card', variant === 'lead' && 'card--lead', 'reveal']} href={href} style={style}>
+    <div class="card__body">
+      <span class={tagClass}>{tag}</span>
+      <h3>{article.data.title}</h3>
+      {variant === 'lead' && <p>{article.data.description}</p>}
+      <time class="card__date" datetime={article.data.date.toISOString()}>{formattedDate}</time>
+    </div>
+  </a>
+)}

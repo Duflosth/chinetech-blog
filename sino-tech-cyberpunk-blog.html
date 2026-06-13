@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CHINETECH - Blog tech Chine</title>
+  <style>
+    :root {
+      --bg: #03040b;
+      --panel: rgba(6, 10, 24, 0.78);
+      --panel-strong: rgba(9, 14, 32, 0.92);
+      --ink: #f6f7ff;
+      --muted: #a9b0c8;
+      --soft: #68708a;
+      --cyan: #20e8ff;
+      --cyan-soft: rgba(32, 232, 255, 0.26);
+      --pink: #ff2ec4;
+      --pink-soft: rgba(255, 46, 196, 0.28);
+      --red: #ff2b3f;
+      --violet: #8b5cff;
+      --line: rgba(126, 229, 255, 0.24);
+      --line-pink: rgba(255, 46, 196, 0.36);
+      --radius: 4px;
+      --shadow-cyan: 0 0 24px rgba(32, 232, 255, 0.34), 0 0 72px rgba(32, 232, 255, 0.12);
+      --shadow-pink: 0 0 24px rgba(255, 46, 196, 0.40), 0 0 86px rgba(255, 46, 196, 0.14);
+      --font-display: "Rajdhani", "Orbitron", "Arial Narrow", Impact, sans-serif;
+      --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 46, 196, 0.20), transparent 30%),
+        radial-gradient(circle at 80% 2%, rgba(32, 232, 255, 0.18), transparent 28%),
+        linear-gradient(180deg, #03040b 0%, #050612 54%, #02030a 100%);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      letter-spacing: 0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      background:
+        linear-gradient(90deg, rgba(32, 232, 255, 0.055) 1px, transparent 1px),
+        linear-gradient(rgba(255, 46, 196, 0.045) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.80), transparent 78%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 5px),
+        linear-gradient(90deg, rgba(255,46,196,0.035), rgba(32,232,255,0.035));
+      mix-blend-mode: screen;
+      opacity: 0.28;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 30;
+      border-bottom: 1px solid rgba(32, 232, 255, 0.18);
+      background: rgba(3, 4, 11, 0.72);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 1px 0 rgba(255, 46, 196, 0.12), 0 0 36px rgba(32, 232, 255, 0.10);
+    }
+
+    .topbar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 78px;
+      gap: 24px;
+    }
+
+    .brand {
+      display: grid;
+      gap: 1px;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      line-height: 0.9;
+    }
+
+    .brand__name {
+      font-size: 29px;
+      font-weight: 900;
+      text-shadow: 0 0 14px rgba(255,255,255,0.50), 0 0 28px var(--pink-soft);
+    }
+
+    .brand__name::after {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-left: 7px;
+      background: var(--pink);
+      box-shadow: 0 0 14px var(--pink), 0 0 34px var(--pink);
+      transform: translateY(-3px);
+    }
+
+    .brand__tag {
+      color: #f8efff;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-shadow: 0 0 12px rgba(255,255,255,0.35);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: #e6e8ff;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .nav a {
+      position: relative;
+      padding: 8px 1px;
+      color: rgba(246, 247, 255, 0.80);
+      transition: color 160ms ease, text-shadow 160ms ease;
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--pink), var(--cyan));
+      box-shadow: 0 0 12px var(--pink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 180ms ease;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      color: #fff;
+      text-shadow: 0 0 12px var(--cyan), 0 0 20px var(--pink);
+    }
+
+    .nav a:hover::after,
+    .nav a:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    .icon-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #fff;
+    }
+
+    .icon-button {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid transparent;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+
+    .icon-button:hover {
+      border-color: var(--line-pink);
+      box-shadow: var(--shadow-pink);
+      transform: translateY(-1px);
+    }
+
+    .icon-button svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .hero {
+      position: relative;
+      --hero-h: clamp(760px, 88svh, 940px);
+      min-height: var(--hero-h);
+      padding: 118px 0 46px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      background-image:
+        linear-gradient(90deg, rgba(3,4,11,0.96) 0%, rgba(3,4,11,0.74) 31%, rgba(3,4,11,0.22) 66%, rgba(3,4,11,0.78) 100%),
+        linear-gradient(0deg, #03040b 0%, rgba(3,4,11,0.20) 32%, rgba(3,4,11,0.08) 78%, rgba(3,4,11,0.62) 100%),
+        url("assets/china-tech-cyberpunk-hero.png");
+      background-position: center;
+      background-size: cover;
+      transform: scale(1.06);
+      animation: heroDrift 18s ease-in-out infinite alternate;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 68% 30%, rgba(32,232,255,0.26), transparent 20%),
+        radial-gradient(circle at 82% 18%, rgba(255,46,196,0.24), transparent 19%),
+        linear-gradient(120deg, transparent 0 46%, rgba(32,232,255,0.18) 46.2% 46.7%, transparent 47% 100%);
+      mix-blend-mode: screen;
+    }
+
+    @keyframes heroDrift {
+      from { transform: scale(1.06) translate3d(-10px, -4px, 0); }
+      to { transform: scale(1.11) translate3d(18px, 8px, 0); }
+    }
+
+    .hero__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(260px, 0.65fr);
+      align-items: end;
+      min-height: calc(var(--hero-h) - 164px);
+      gap: 42px;
+    }
+
+    .hero__content {
+      max-width: 650px;
+      padding-bottom: 48px;
+    }
+
+    .eyebrow {
+      margin: 0 0 16px;
+      color: var(--pink);
+      font-family: var(--font-mono);
+      font-size: clamp(13px, 1.4vw, 17px);
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px var(--pink), 0 0 30px var(--pink);
+    }
+
+    h1 {
+      margin: 0;
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: clamp(62px, 9.5vw, 138px);
+      font-weight: 900;
+      line-height: 0.82;
+      text-transform: uppercase;
+    }
+
+    .hero__line {
+      display: block;
+      color: rgba(255,255,255,0.92);
+      text-shadow: 0 0 12px rgba(255,255,255,0.42);
+    }
+
+    .hero__line--pink {
+      color: transparent;
+      -webkit-text-stroke: 2px var(--pink);
+      text-shadow: 0 0 16px var(--pink), 0 0 42px var(--pink), 0 0 88px rgba(255,46,196,0.45);
+      animation: neonPulse 2.8s ease-in-out infinite;
+    }
+
+    .hero__line--cyan {
+      color: transparent;
+      -webkit-text-stroke: 2px var(--cyan);
+      text-shadow: 0 0 16px var(--cyan), 0 0 42px var(--cyan), 0 0 92px rgba(32,232,255,0.42);
+      animation: neonPulse 3.1s ease-in-out infinite 380ms;
+    }
+
+    @keyframes neonPulse {
+      0%, 100% { filter: brightness(1); opacity: 0.94; }
+      48% { filter: brightness(1.35); opacity: 1; }
+      52% { filter: brightness(0.92); opacity: 0.86; }
+      58% { filter: brightness(1.5); opacity: 1; }
+    }
+
+    .hero__copy {
+      max-width: 480px;
+      margin: 22px 0 0;
+      color: #d8dcee;
+      font-size: clamp(16px, 1.7vw, 20px);
+      line-height: 1.45;
+      text-shadow: 0 0 18px rgba(32,232,255,0.16);
+    }
+
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 48px;
+      border: 1px solid var(--line-pink);
+      border-radius: var(--radius);
+      background: rgba(8, 10, 24, 0.68);
+      color: #fff;
+      padding: 13px 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      box-shadow: inset 0 0 18px rgba(255,46,196,0.08), 0 0 22px rgba(255,46,196,0.20);
+      transition: transform 170ms ease, border-color 170ms ease, box-shadow 170ms ease, background 170ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      border-color: var(--pink);
+      background: rgba(255, 46, 196, 0.10);
+      box-shadow: var(--shadow-pink);
+    }
+
+    .button--cyan {
+      border-color: var(--line);
+      box-shadow: inset 0 0 18px rgba(32,232,255,0.08), 0 0 22px rgba(32,232,255,0.18);
+    }
+
+    .button--cyan:hover {
+      border-color: var(--cyan);
+      background: rgba(32,232,255,0.10);
+      box-shadow: var(--shadow-cyan);
+    }
+
+    .button svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .signal {
+      align-self: end;
+      margin-bottom: 38px;
+      border: 1px solid rgba(255,46,196,0.32);
+      background: linear-gradient(135deg, rgba(7,10,22,0.78), rgba(15,20,44,0.46));
+      box-shadow: var(--shadow-pink);
+      backdrop-filter: blur(14px);
+    }
+
+    .signal__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,46,196,0.20);
+      padding: 13px 15px;
+      color: var(--cyan);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px var(--cyan);
+    }
+
+    .live-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 18px var(--red), 0 0 36px var(--red);
+      animation: blink 1.2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.34; transform: scale(0.82); }
+    }
+
+    .signal__body {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .metric {
+      min-height: 112px;
+      padding: 16px;
+      border-right: 1px solid rgba(32,232,255,0.14);
+    }
+
+    .metric:last-child {
+      border-right: 0;
+    }
+
+    .metric b {
+      display: block;
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 32px;
+      line-height: 1;
+      text-shadow: 0 0 12px var(--pink);
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .hero__ticker {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      border-top: 1px solid rgba(32,232,255,0.20);
+      background: rgba(3,4,11,0.72);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+
+    .ticker__track {
+      display: flex;
+      width: max-content;
+      animation: ticker 26s linear infinite;
+    }
+
+    .ticker__track span {
+      padding: 13px 22px;
+      color: var(--cyan);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px var(--cyan);
+      white-space: nowrap;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .section {
+      position: relative;
+      padding: 58px 0;
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      left: max(20px, calc((100vw - 1180px) / 2));
+      right: max(20px, calc((100vw - 1180px) / 2));
+      top: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line-pink), var(--line), transparent);
+      box-shadow: 0 0 18px rgba(255,46,196,0.28);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      margin-bottom: 22px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0;
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      text-transform: uppercase;
+      text-shadow: 0 0 14px rgba(255,255,255,0.22);
+    }
+
+    .section-title::before {
+      content: "//";
+      color: var(--pink);
+      font-family: var(--font-mono);
+      font-size: 18px;
+      text-shadow: 0 0 14px var(--pink);
+    }
+
+    .section-head p {
+      max-width: 430px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .featured {
+      display: grid;
+      grid-template-columns: minmax(0, 1.22fr) minmax(310px, 0.95fr);
+      gap: 16px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      min-height: 208px;
+      border: 1px solid rgba(32,232,255,0.20);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.025);
+      isolation: isolate;
+      transition: transform 190ms ease, border-color 190ms ease, box-shadow 190ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,46,196,0.72);
+      box-shadow: var(--shadow-pink);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(90deg, rgba(3,4,11,0.88), rgba(3,4,11,0.40)),
+        var(--img);
+      background-position: var(--pos, center);
+      background-size: cover;
+      filter: saturate(1.18) contrast(1.12);
+      transform: scale(1.04);
+      transition: transform 240ms ease, filter 240ms ease;
+    }
+
+    .card:hover::before {
+      transform: scale(1.09);
+      filter: saturate(1.42) contrast(1.18);
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 18% 80%, rgba(255,46,196,0.28), transparent 30%),
+        radial-gradient(circle at 84% 24%, rgba(32,232,255,0.22), transparent 26%),
+        linear-gradient(0deg, rgba(3,4,11,0.92), rgba(3,4,11,0.08) 55%);
+    }
+
+    .card--lead {
+      min-height: 430px;
+    }
+
+    .card__body {
+      position: absolute;
+      inset: auto 24px 24px 24px;
+    }
+
+    .card--lead .card__body {
+      inset: auto 32px 32px 32px;
+      max-width: 600px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      margin-bottom: 14px;
+      border: 1px solid currentColor;
+      border-radius: 2px;
+      background: rgba(255,46,196,0.18);
+      color: var(--pink);
+      padding: 4px 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px currentColor;
+    }
+
+    .tag--cyan {
+      background: rgba(32,232,255,0.15);
+      color: var(--cyan);
+    }
+
+    .tag--red {
+      background: rgba(255,43,63,0.15);
+      color: var(--red);
+    }
+
+    .card h3 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(22px, 2.9vw, 36px);
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 22px rgba(255,255,255,0.18);
+    }
+
+    .card--lead h3 {
+      font-size: clamp(34px, 4.2vw, 55px);
+      line-height: 0.98;
+    }
+
+    .card p {
+      max-width: 520px;
+      margin: 14px 0 0;
+      color: #d5d9ec;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .card__date {
+      display: block;
+      margin-top: 12px;
+      color: var(--soft);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+    }
+
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .topics {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+    }
+
+    .topic {
+      min-height: 108px;
+      display: grid;
+      place-items: center;
+      gap: 10px;
+      border: 1px solid rgba(137, 92, 255, 0.35);
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,46,196,0.16), transparent 58%),
+        rgba(8, 11, 28, 0.78);
+      color: #fff;
+      text-align: center;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .topic:hover {
+      transform: translateY(-4px);
+      border-color: var(--cyan);
+      box-shadow: var(--shadow-cyan);
+    }
+
+    .topic svg {
+      width: 34px;
+      height: 34px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.4;
+      filter: drop-shadow(0 0 10px currentColor);
+    }
+
+    .topic:nth-child(odd) svg {
+      color: var(--pink);
+    }
+
+    .topic:nth-child(even) svg {
+      color: var(--cyan);
+    }
+
+    .topic span {
+      color: #dfe9ff;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .newsletter {
+      position: sticky;
+      top: 102px;
+      overflow: hidden;
+      border: 1px solid rgba(255,46,196,0.34);
+      border-radius: var(--radius);
+      background: var(--panel-strong);
+      box-shadow: var(--shadow-pink);
+    }
+
+    .newsletter::before {
+      content: "";
+      display: block;
+      height: 198px;
+      background-image:
+        linear-gradient(0deg, rgba(7,10,24,0.97), rgba(7,10,24,0.12)),
+        url("assets/china-tech-cyberpunk-hero.png");
+      background-size: 190%;
+      background-position: 75% 70%;
+      filter: saturate(1.28);
+    }
+
+    .newsletter__body {
+      padding: 22px;
+    }
+
+    .newsletter h3 {
+      margin: 0;
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-shadow: 0 0 14px var(--pink);
+    }
+
+    .newsletter p {
+      margin: 10px 0 18px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.42;
+    }
+
+    .form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .form input {
+      min-height: 46px;
+      width: 100%;
+      border: 1px solid rgba(32,232,255,0.22);
+      border-radius: var(--radius);
+      background: rgba(0,0,0,0.34);
+      color: #fff;
+      padding: 12px 13px;
+      outline: none;
+      font: inherit;
+    }
+
+    .form input:focus {
+      border-color: var(--cyan);
+      box-shadow: var(--shadow-cyan);
+    }
+
+    .form button {
+      min-height: 46px;
+      border: 1px solid var(--pink);
+      border-radius: var(--radius);
+      background: rgba(255,46,196,0.14);
+      color: #fff;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      box-shadow: var(--shadow-pink);
+    }
+
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .article {
+      overflow: hidden;
+      border: 1px solid rgba(32,232,255,0.22);
+      border-radius: var(--radius);
+      background: var(--panel);
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .article:hover {
+      transform: translateY(-5px);
+      border-color: var(--pink);
+      box-shadow: var(--shadow-pink);
+    }
+
+    .article__image {
+      height: 156px;
+      background-image:
+        linear-gradient(0deg, rgba(3,4,11,0.72), rgba(3,4,11,0.02)),
+        url("assets/china-tech-cyberpunk-hero.png");
+      background-size: cover;
+      background-position: var(--pos, center);
+      filter: saturate(1.24) contrast(1.10);
+    }
+
+    .article__body {
+      padding: 17px;
+    }
+
+    .article h3 {
+      min-height: 76px;
+      margin: 0;
+      color: #fff;
+      font-size: 19px;
+      line-height: 1.22;
+      font-weight: 650;
+    }
+
+    .article time {
+      display: block;
+      margin-top: 16px;
+      color: var(--soft);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .footer {
+      position: relative;
+      margin-top: 42px;
+      border-top: 1px solid rgba(255,46,196,0.36);
+      background:
+        linear-gradient(90deg, rgba(3,4,11,0.98), rgba(7,9,25,0.92)),
+        url("assets/china-tech-cyberpunk-hero.png");
+      background-size: cover;
+      background-position: center bottom;
+      overflow: hidden;
+    }
+
+    .footer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(3,4,11,0.98), rgba(3,4,11,0.88) 60%, rgba(3,4,11,0.34));
+    }
+
+    .footer__inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 0.8fr);
+      gap: 36px;
+      padding: 46px 0;
+    }
+
+    .footer h3,
+    .footer h4 {
+      margin: 0 0 14px;
+      color: #fff;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+    }
+
+    .footer h3 {
+      font-size: 31px;
+      text-shadow: 0 0 16px var(--pink);
+    }
+
+    .footer h4 {
+      color: var(--pink);
+      font-size: 15px;
+      letter-spacing: 0.12em;
+      text-shadow: 0 0 14px var(--pink);
+    }
+
+    .footer p,
+    .footer a {
+      display: block;
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.44;
+    }
+
+    .social {
+      display: flex;
+      gap: 13px;
+    }
+
+    .social a {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(32,232,255,0.22);
+      color: var(--cyan);
+      box-shadow: 0 0 14px rgba(32,232,255,0.16);
+    }
+
+    .social svg {
+      width: 17px;
+      height: 17px;
+      fill: currentColor;
+    }
+
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+
+    .js-ready .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 560ms ease, transform 560ms ease;
+    }
+
+    .js-ready .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .topbar {
+        position: absolute;
+      }
+
+      .topbar__inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 16px 0;
+      }
+
+      .nav {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 3px;
+      }
+
+      .icon-row {
+        position: absolute;
+        top: 18px;
+        right: 20px;
+      }
+
+      .hero {
+        padding-top: 166px;
+      }
+
+      .hero__grid,
+      .featured,
+      .content-grid,
+      .footer__inner {
+        grid-template-columns: 1fr;
+      }
+
+      .hero__grid {
+        min-height: auto;
+      }
+
+      .hero__content {
+        padding-bottom: 22px;
+      }
+
+      .signal {
+        margin-bottom: 26px;
+      }
+
+      .topics {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .newsletter {
+        position: relative;
+        top: 0;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .shell {
+        width: min(100% - 26px, 1180px);
+      }
+
+      .hero {
+        min-height: auto;
+        padding-bottom: 92px;
+      }
+
+      .hero::before {
+        background-image:
+          linear-gradient(0deg, rgba(3,4,11,0.98) 0%, rgba(3,4,11,0.74) 48%, rgba(3,4,11,0.32) 100%),
+          url("assets/china-tech-cyberpunk-hero.png");
+        background-position: 62% center;
+      }
+
+      .hero__line--pink,
+      .hero__line--cyan {
+        -webkit-text-stroke-width: 1.25px;
+      }
+
+      h1 {
+        font-size: clamp(40px, 13.8vw, 58px);
+        line-height: 0.88;
+      }
+
+      .hero__actions,
+      .button {
+        width: 100%;
+      }
+
+      .article-grid,
+      .topics {
+        grid-template-columns: 1fr;
+      }
+
+      .signal__body {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .metric {
+        min-height: 122px;
+        padding: 13px 9px;
+        border-right: 1px solid rgba(32,232,255,0.14);
+        border-bottom: 0;
+      }
+
+      .metric:last-child {
+        border-right: 0;
+      }
+
+      .metric b {
+        font-size: 28px;
+      }
+
+      .metric span {
+        font-size: 10px;
+      }
+
+      .card--lead {
+        min-height: 390px;
+      }
+
+      .card__body,
+      .card--lead .card__body {
+        inset: auto 18px 18px 18px;
+      }
+
+      .section {
+        padding: 44px 0;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar__inner">
+      <a class="brand" href="#top" aria-label="CHINETECH accueil">
+        <span class="brand__name">CHINETECH</span>
+        <span class="brand__tag">科技中国</span>
+      </a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="#top">Accueil</a>
+        <a href="#featured">Tech</a>
+        <a href="#topics">Chine</a>
+        <a href="#latest">Innovation</a>
+        <a href="#subscribe">Business</a>
+        <a href="#footer">À propos</a>
+      </nav>
+
+      <div class="icon-row" aria-hidden="true">
+        <button class="icon-button" type="button" aria-label="Recherche">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16.5 16.5 4 4"></path></svg>
+        </button>
+        <button class="icon-button" type="button" aria-label="Menu">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-label="Introduction">
+      <div class="shell hero__grid">
+        <div class="hero__content reveal">
+          <p class="eyebrow">Décrypter. Comprendre. Anticiper.</p>
+          <h1>
+            <span class="hero__line">Là où la</span>
+            <span class="hero__line hero__line--pink">tech</span>
+            <span class="hero__line">rencontre</span>
+            <span class="hero__line hero__line--cyan">la Chine</span>
+          </h1>
+          <p class="hero__copy">Analyses, tendances et signaux faibles de l’écosystème technologique chinois : IA, semi-conducteurs, e-commerce, robotique, mobilité et géopolitique numérique.</p>
+          <div class="hero__actions">
+            <a class="button" href="#featured">
+              Découvrir les articles
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </a>
+            <a class="button button--cyan" href="#subscribe">
+              Recevoir la veille
+              <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"></path><path d="m4 7 8 6 8-6"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <aside class="signal reveal" aria-label="Indicateurs en direct">
+          <div class="signal__header">
+            <span>En direct de Shenzhen</span>
+            <span class="live-dot"></span>
+          </div>
+          <div class="signal__body">
+            <div class="metric"><b>57</b><span>levées hardware suivies cette semaine</span></div>
+            <div class="metric"><b>14</b><span>modèles IA chinois analysés</span></div>
+            <div class="metric"><b>6</b><span>villes pilotes robotaxis sous radar</span></div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="hero__ticker" aria-hidden="true">
+        <div class="ticker__track">
+          <span>DeepSeek</span><span>半导体</span><span>Shenzhen supply chain</span><span>BYD software</span><span>Robotaxis</span><span>E-commerce live</span><span>AI chips</span><span>未来城市</span>
+          <span>DeepSeek</span><span>半导体</span><span>Shenzhen supply chain</span><span>BYD software</span><span>Robotaxis</span><span>E-commerce live</span><span>AI chips</span><span>未来城市</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="featured">
+      <div class="shell">
+        <div class="section-head reveal">
+          <h2 class="section-title">À la une</h2>
+          <p>Une sélection éditoriale pour comprendre les mouvements qui redessinent l’industrie tech chinoise.</p>
+        </div>
+
+        <div class="featured">
+          <article class="card card--lead reveal" style="--img: url('assets/china-tech-cyberpunk-hero.png'); --pos: 72% 58%;">
+            <div class="card__body">
+              <span class="tag">Tech</span>
+              <h3>DeepSeek : l’IA chinoise qui oblige la Silicon Valley à revoir ses coûts</h3>
+              <p>Au-delà du buzz, ce que révèle l’écosystème DeepSeek : talent, compute, open models et nouvelles chaînes de valeur.</p>
+              <time class="card__date">22 MAI 2026</time>
+            </div>
+          </article>
+
+          <div class="stack">
+            <article class="card reveal" style="--img: url('assets/china-tech-cyberpunk-hero.png'); --pos: 94% 26%;">
+              <div class="card__body">
+                <span class="tag tag--cyan">Innovation</span>
+                <h3>Les puces chinoises passent à la vitesse supérieure</h3>
+                <time class="card__date">21 MAI 2026</time>
+              </div>
+            </article>
+            <article class="card reveal" style="--img: url('assets/china-tech-cyberpunk-hero.png'); --pos: 52% 44%;">
+              <div class="card__body">
+                <span class="tag tag--red">Business</span>
+                <h3>Shein, Temu, Xiaomi : la conquête globale s’accélère</h3>
+                <time class="card__date">19 MAI 2026</time>
+              </div>
+            </article>
+            <article class="card reveal" style="--img: url('assets/china-tech-cyberpunk-hero.png'); --pos: 86% 76%;">
+              <div class="card__body">
+                <span class="tag tag--cyan">Société</span>
+                <h3>Surveillance, données et ville algorithmique</h3>
+                <time class="card__date">18 MAI 2026</time>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="topics">
+      <div class="shell">
+        <div class="section-head reveal">
+          <h2 class="section-title">Explorer par thème</h2>
+          <p>Les verticales suivies comme des marchés vivants, pas comme de simples communiqués.</p>
+        </div>
+
+        <div class="topics">
+          <a class="topic reveal" href="#latest">
+            <svg viewBox="0 0 24 24"><rect x="6" y="8" width="12" height="10" rx="2"></rect><path d="M9 8V5m6 3V5M8 13h.01M16 13h.01M12 18v3M9 21h6M3 12h3M18 12h3"></path></svg>
+            <span>IA & Robotique</span>
+          </a>
+          <a class="topic reveal" href="#latest">
+            <svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10"></rect><rect x="10" y="10" width="4" height="4"></rect><path d="M4 9h3M4 15h3M17 9h3M17 15h3M9 4v3M15 4v3M9 17v3M15 17v3"></path></svg>
+            <span>Semi-conducteurs</span>
+          </a>
+          <a class="topic reveal" href="#latest">
+            <svg viewBox="0 0 24 24"><path d="M3 15h18l-2-5H6l-3 5Z"></path><path d="M7 15v2M17 15v2M8 10l2-3h5l2 3"></path><circle cx="8" cy="17" r="1.6"></circle><circle cx="17" cy="17" r="1.6"></circle></svg>
+            <span>Mobilité</span>
+          </a>
+          <a class="topic reveal" href="#latest">
+            <svg viewBox="0 0 24 24"><path d="M6 7h15l-2 8H8L6 7Z"></path><path d="M6 7 5 4H2"></path><circle cx="9" cy="19" r="1.5"></circle><circle cx="18" cy="19" r="1.5"></circle><path d="M10 11h5"></path></svg>
+            <span>E-commerce</span>
+          </a>
+          <a class="topic reveal" href="#latest">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"></path></svg>
+            <span>Géopolitique</span>
+          </a>
+          <a class="topic reveal" href="#latest">
+            <svg viewBox="0 0 24 24"><path d="M5 19c4-1 9-5 12-12l-2-2C8 8 4 13 3 17l4-1-2 3Z"></path><path d="M14 6l4 4M8 16l-2 5"></path></svg>
+            <span>Startups</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="latest">
+      <div class="shell content-grid">
+        <aside class="newsletter reveal" id="subscribe">
+          <div class="newsletter__body">
+            <h3>Restez à la pointe</h3>
+            <p>L’actualité tech & Chine dans votre boîte mail, chaque vendredi matin.</p>
+            <form class="form">
+              <label class="sr-only" for="email">Adresse email</label>
+              <input id="email" type="email" placeholder="votre@email.com" autocomplete="email">
+              <button type="submit">S’abonner</button>
+            </form>
+          </div>
+        </aside>
+
+        <div>
+          <div class="section-head reveal">
+            <h2 class="section-title">Derniers articles</h2>
+            <p>Les derniers signaux triés par impact : industrie, logiciels, villes et plateformes.</p>
+          </div>
+
+          <div class="article-grid">
+            <article class="article reveal" style="--pos: 66% 32%;">
+              <div class="article__image"></div>
+              <div class="article__body">
+                <span class="tag">Tech</span>
+                <h3>L’IA chinoise et le jeu de Go : le début d’une nouvelle ère</h3>
+                <time>16 MAI 2026</time>
+              </div>
+            </article>
+            <article class="article reveal" style="--pos: 84% 52%;">
+              <div class="article__image"></div>
+              <div class="article__body">
+                <span class="tag tag--cyan">Innovation</span>
+                <h3>Les taxis volants arrivent bientôt à Guangzhou</h3>
+                <time>14 MAI 2026</time>
+              </div>
+            </article>
+            <article class="article reveal" style="--pos: 96% 20%;">
+              <div class="article__image"></div>
+              <div class="article__body">
+                <span class="tag tag--red">Business</span>
+                <h3>La nouvelle route de la soie numérique</h3>
+                <time>12 MAI 2026</time>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="shell footer__inner">
+      <div>
+        <h3>CHINETECH</h3>
+        <p>Le média qui décrypte l’innovation et l’écosystème technologique chinois.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <a href="#top">Accueil</a>
+        <a href="#featured">À la une</a>
+        <a href="#latest">Tous les articles</a>
+      </div>
+      <div>
+        <h4>Thématiques</h4>
+        <a href="#topics">IA & Robotique</a>
+        <a href="#topics">Semi-conducteurs</a>
+        <a href="#topics">Mobilité</a>
+      </div>
+      <div>
+        <h4>Suivez-nous</h4>
+        <div class="social" aria-label="Réseaux sociaux">
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.1l-4.8-6.3L6.6 22H3.4l7.3-8.4L3.2 2h6.3l4.3 5.7L18.9 2Z"></path></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5ZM3 10h4v11H3V10Zm7 0h3.8v1.5h.1c.5-.9 1.8-1.9 3.7-1.9 4 0 4.7 2.6 4.7 6V21h-4v-5c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V21h-4V10Z"></path></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M21.6 7.2s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.4-1C15 3.6 12 3.6 12 3.6h0s-3 0-6.3.3c-.5.1-1.5.1-2.4 1-.7.7-.9 2.3-.9 2.3S2.2 9.1 2.2 11v1.8c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.3c.9.9 2.1.9 2.7 1 2 .2 6 .3 6 .3s3 0 6.3-.3c.5-.1 1.5-.1 2.4-1 .7-.7.9-2.3.9-2.3s.2-1.9.2-3.8V11c0-1.9-.2-3.8-.2-3.8ZM10.2 14.9V8.4l5.8 3.3-5.8 3.2Z"></path></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.documentElement.classList.add('js-ready');
+
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      }
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll('.reveal').forEach((node) => {
+      if (node.getBoundingClientRect().top < window.innerHeight * 0.92) {
+        node.classList.add('is-visible');
+      }
+      observer.observe(node);
+    });
+  </script>
+</body>
+</html>

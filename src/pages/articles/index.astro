@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+
+const articles = (await getCollection('articles', ({ data }) => data.draft !== true)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const tagVariants = ['pink', 'cyan', 'red'] as const;
+---
+
+<BaseLayout title="Tous les articles - CHINETECH" description="Tous les articles CHINETECH sur l'innovation, l'IA et la tech chinoise.">
+  <main class="page-main">
+    <section class="page-hero shell reveal">
+      <p class="eyebrow">Archives éditoriales</p>
+      <h1>Tous les articles</h1>
+      <p>Analyses longues, signaux faibles et lectures marché pour suivre l'écosystème technologique chinois sans bruit inutile.</p>
+    </section>
+
+    <section class="section section--compact">
+      <div class="shell">
+        <div class="article-grid archive-grid">
+          {articles.map((article, index) => (
+            <ArticleCard
+              article={article}
+              position={['66% 32%', '84% 52%', '96% 20%', '72% 58%'][index % 4]}
+              tagVariant={tagVariants[index % tagVariants.length]}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

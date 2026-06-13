@@ -1,0 +1,165 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+
+const publishedArticles = (await getCollection('articles', ({ data }) => data.draft !== true)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const featuredArticles = publishedArticles
+  .filter((article) => article.data.featured)
+  .sort((a, b) => {
+    const rankDiff = (a.data.featuredRank ?? 999) - (b.data.featuredRank ?? 999);
+    return rankDiff || b.data.date.valueOf() - a.data.date.valueOf();
+  });
+
+const featuredIds = new Set(featuredArticles.map((article) => article.id));
+const featuredDisplay = [
+  ...featuredArticles,
+  ...publishedArticles.filter((article) => !featuredIds.has(article.id))
+].slice(0, 4);
+const latestArticles = publishedArticles.slice(0, 3);
+const positions = ['72% 58%', '94% 26%', '52% 44%', '86% 76%'];
+const tagVariants = ['pink', 'cyan', 'red', 'cyan'] as const;
+---
+
+<BaseLayout>
+  <main id="top">
+    <section class="hero" aria-label="Introduction">
+      <div class="shell hero__grid">
+        <div class="hero__content reveal">
+          <p class="eyebrow">Décrypter. Comprendre. Anticiper.</p>
+          <h1>
+            <span class="hero__line">Là où la</span>
+            <span class="hero__line hero__line--pink">tech</span>
+            <span class="hero__line">rencontre</span>
+            <span class="hero__line hero__line--cyan">la Chine</span>
+          </h1>
+          <p class="hero__copy">Analyses, tendances et signaux faibles de l'écosystème technologique chinois : IA, semi-conducteurs, e-commerce, robotique, mobilité et géopolitique numérique.</p>
+          <div class="hero__actions">
+            <a class="button" href="#featured">
+              Découvrir les articles
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            </a>
+            <a class="button button--cyan" href="#subscribe">
+              Recevoir la veille
+              <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"></path><path d="m4 7 8 6 8-6"></path></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__ticker" aria-hidden="true">
+        <div class="ticker__track">
+          <span>DeepSeek</span><span>半导体</span><span>Shenzhen supply chain</span><span>BYD software</span><span>Robotaxis</span><span>E-commerce live</span><span>AI chips</span><span>未来城市</span>
+          <span>DeepSeek</span><span>半导体</span><span>Shenzhen supply chain</span><span>BYD software</span><span>Robotaxis</span><span>E-commerce live</span><span>AI chips</span><span>未来城市</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="featured">
+      <div class="shell">
+        <div class="section-head reveal">
+          <h2 class="section-title">À la une</h2>
+          <p>Une sélection éditoriale pour comprendre les mouvements qui redessinent l'industrie tech chinoise.</p>
+        </div>
+
+        <div class="featured">
+          {featuredDisplay[0] && (
+            <ArticleCard
+              article={featuredDisplay[0]}
+              variant="lead"
+              position={positions[0]}
+              tagVariant={tagVariants[0]}
+            />
+          )}
+
+          <div class="stack">
+            {featuredDisplay.slice(1, 4).map((article, index) => (
+              <ArticleCard
+                article={article}
+                variant="feature"
+                position={positions[index + 1]}
+                tagVariant={tagVariants[index + 1]}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="topics">
+      <div class="shell">
+        <div class="section-head reveal">
+          <h2 class="section-title">Explorer par thème</h2>
+          <p>Les verticales suivies comme des marchés vivants, pas comme de simples communiqués.</p>
+        </div>
+
+        <div class="topics">
+          <a class="topic reveal" href="/articles/">
+            <svg viewBox="0 0 24 24"><rect x="6" y="8" width="12" height="10" rx="2"></rect><path d="M9 8V5m6 3V5M8 13h.01M16 13h.01M12 18v3M9 21h6M3 12h3M18 12h3"></path></svg>
+            <span>IA & Robotique</span>
+          </a>
+          <a class="topic reveal" href="/articles/">
+            <svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10"></rect><rect x="10" y="10" width="4" height="4"></rect><path d="M4 9h3M4 15h3M17 9h3M17 15h3M9 4v3M15 4v3M9 17v3M15 17v3"></path></svg>
+            <span>Semi-conducteurs</span>
+          </a>
+          <a class="topic reveal" href="/articles/">
+            <svg viewBox="0 0 24 24"><path d="M3 15h18l-2-5H6l-3 5Z"></path><path d="M7 15v2M17 15v2M8 10l2-3h5l2 3"></path><circle cx="8" cy="17" r="1.6"></circle><circle cx="17" cy="17" r="1.6"></circle></svg>
+            <span>Mobilité</span>
+          </a>
+          <a class="topic reveal" href="/articles/">
+            <svg viewBox="0 0 24 24"><path d="M6 7h15l-2 8H8L6 7Z"></path><path d="M6 7 5 4H2"></path><circle cx="9" cy="19" r="1.5"></circle><circle cx="18" cy="19" r="1.5"></circle><path d="M10 11h5"></path></svg>
+            <span>E-commerce</span>
+          </a>
+          <a class="topic reveal" href="/articles/">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"></path></svg>
+            <span>Géopolitique</span>
+          </a>
+          <a class="topic reveal" href="/articles/">
+            <svg viewBox="0 0 24 24"><path d="M5 19c4-1 9-5 12-12l-2-2C8 8 4 13 3 17l4-1-2 3Z"></path><path d="M14 6l4 4M8 16l-2 5"></path></svg>
+            <span>Startups</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="latest">
+      <div class="shell content-grid">
+        <aside class="newsletter reveal" id="subscribe">
+          <div class="newsletter__body">
+            <h3>Restez à la pointe</h3>
+            <p>L'actualité tech & Chine dans votre boîte mail, chaque vendredi matin.</p>
+            <form class="form" name="newsletter" method="POST" action="/merci/" data-netlify="true" netlify-honeypot="bot-field">
+              <input type="hidden" name="form-name" value="newsletter" />
+              <p class="hidden">
+                <label>Ne pas remplir <input name="bot-field" /></label>
+              </p>
+              <label class="sr-only" for="email">Adresse email</label>
+              <input id="email" name="email" type="email" placeholder="votre@email.com" autocomplete="email" required />
+              <button type="submit">S'abonner</button>
+            </form>
+          </div>
+        </aside>
+
+        <div>
+          <div class="section-head reveal">
+            <h2 class="section-title">Derniers articles</h2>
+            <p>Les derniers signaux triés par impact : industrie, logiciels, villes et plateformes.</p>
+          </div>
+
+          <div class="article-grid">
+            {latestArticles.map((article, index) => (
+              <ArticleCard
+                article={article}
+                position={['66% 32%', '84% 52%', '96% 20%'][index] ?? '66% 32%'}
+                tagVariant={tagVariants[index] ?? 'pink'}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

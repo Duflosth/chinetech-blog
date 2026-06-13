@@ -1,0 +1,49 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  author: string;
+  tags: string[];
+  cover?: string;
+}
+
+const { title, description, date, author, tags, cover } = Astro.props;
+const formattedDate = new Intl.DateTimeFormat('fr-FR', {
+  day: '2-digit',
+  month: 'long',
+  year: 'numeric'
+}).format(date);
+---
+
+<BaseLayout title={`${title} - CHINETECH`} description={description}>
+  <main class="article-page">
+    <article class="shell article-detail">
+      <header class="article-hero reveal">
+        <a class="back-link" href="/articles/">Tous les articles</a>
+        <p class="eyebrow">{tags[0] ?? 'Analyse'}</p>
+        <h1>{title}</h1>
+        <p class="article-dek">{description}</p>
+        <div class="article-meta">
+          <time datetime={date.toISOString()}>{formattedDate}</time>
+          <span>{author}</span>
+        </div>
+        {tags.length > 0 && (
+          <div class="tag-list" aria-label="Tags">
+            {tags.map((tag) => <span class="tag tag--cyan">{tag}</span>)}
+          </div>
+        )}
+      </header>
+
+      {cover && (
+        <img class="article-cover reveal" src={cover} alt="" loading="eager" />
+      )}
+
+      <div class="article-content reveal">
+        <slot />
+      </div>
+    </article>
+  </main>
+</BaseLayout>
