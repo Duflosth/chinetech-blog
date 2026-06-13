@@ -243,29 +243,42 @@
         margin-bottom: 8px;
       }
 
-      table {
-        width: 100%;
-        margin-top: 18px;
-        border-collapse: collapse;
-        background: #fffdf5;
-        overflow: hidden;
+      .story {
+        display: grid;
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      .story-item {
+        border-left: 5px solid var(--red);
         border-radius: var(--radius);
+        background: #fffdf5;
+        padding: 18px 20px;
       }
 
-      th,
-      td {
+      .story-item h3 {
+        margin-top: 0;
+      }
+
+      .story-item p {
+        margin: 10px 0 0;
+      }
+
+      .plain-list {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .plain-list div {
         border: 1px solid rgba(152, 0, 32, 0.17);
-        padding: 12px;
-        text-align: left;
-        vertical-align: top;
+        border-radius: 10px;
+        background: #fffdf5;
+        padding: 16px 18px;
       }
 
-      th {
-        background: linear-gradient(90deg, var(--red), #ffb300);
-        color: #fff;
-        font-family: var(--mono);
-        font-size: 12px;
-        text-transform: uppercase;
+      .plain-list h3 {
+        margin-top: 0;
       }
 
       .callout {
@@ -453,107 +466,158 @@
       <section class="section page-break" id="services">
         <h2>Les services</h2>
         <p class="lead">
-          Voici les services à connaître. Pas besoin de tout maîtriser : il faut surtout savoir à quoi chacun sert.
+          Voici les services à connaître. Il ne faut pas les apprendre comme une liste technique.
+          Il faut plutôt les voir comme les personnes qui font tourner un petit magazine.
         </p>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Service</th>
-              <th>Métaphore</th>
-              <th>À quoi ça sert</th>
-              <th>Compte à créer ?</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>GitHub</strong></td>
-              <td>L'armoire + la machine à remonter le temps.</td>
-              <td>Stocke le projet et garde l'historique de chaque changement.</td>
-              <td>Oui si on veut utiliser Codex sur le code ou collaborer sur le projet.</td>
-            </tr>
-            <tr>
-              <td><strong>Netlify</strong></td>
-              <td>L'imprimeur automatique.</td>
-              <td>Publie le site en ligne dès que GitHub change. Gère aussi les formulaires et les accès CMS.</td>
-              <td>Oui pour le propriétaire. Non pour un simple rédacteur CMS.</td>
-            </tr>
-            <tr>
-              <td><strong>Decap CMS</strong></td>
-              <td>Le formulaire de rédaction.</td>
-              <td>Permet d'écrire des articles sans toucher au code.</td>
-              <td>Non directement. On se connecte avec Netlify Identity.</td>
-            </tr>
-            <tr>
-              <td><strong>Netlify Identity</strong></td>
-              <td>Le badge d'entrée.</td>
-              <td>Autorise les personnes invitées à entrer dans le CMS.</td>
-              <td>Oui, mais seulement via une invitation email.</td>
-            </tr>
-            <tr>
-              <td><strong>Git Gateway</strong></td>
-              <td>Le coursier.</td>
-              <td>Transporte les articles du CMS vers GitHub.</td>
-              <td>Non. C'est une configuration côté Netlify.</td>
-            </tr>
-            <tr>
-              <td><strong>Astro</strong></td>
-              <td>La machine de mise en page.</td>
-              <td>Transforme les fichiers du projet en pages web rapides.</td>
-              <td>Non.</td>
-            </tr>
-            <tr>
-              <td><strong>Codex</strong></td>
-              <td>L'assistant qui sait modifier l'atelier.</td>
-              <td>Aide à changer le code, corriger un bug, ajouter une page, modifier un style.</td>
-              <td>Oui via ChatGPT/Codex, et souvent GitHub connecté.</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="story">
+          <article class="story-item">
+            <h3>GitHub : l'armoire officielle</h3>
+            <p>
+              GitHub est l'endroit où le projet vit réellement. Il garde les fichiers du site,
+              les articles, les images importantes et l'historique des changements. Dans notre métaphore,
+              c'est l'armoire officielle du magazine : si quelque chose est dans GitHub, le projet peut le retrouver.
+            </p>
+            <p>
+              C'est aussi une machine à remonter le temps. Quand quelqu'un modifie le site, GitHub garde une trace.
+              On peut donc comprendre qui a changé quoi, quand, et pourquoi.
+            </p>
+          </article>
+
+          <article class="story-item">
+            <h3>Netlify : l'imprimeur et la vitrine</h3>
+            <p>
+              Netlify prend ce qui est rangé dans GitHub et le transforme en site visible par le public.
+              Dès qu'un changement est envoyé dans GitHub, Netlify reconstruit le site et le met en ligne.
+            </p>
+            <p>
+              La différence est simple : GitHub garde les fichiers, Netlify montre le résultat.
+              GitHub est la réserve du magasin. Netlify est la vitrine que les visiteurs voient.
+            </p>
+          </article>
+
+          <article class="story-item">
+            <h3>Decap CMS : le bureau de rédaction</h3>
+            <p>
+              Decap CMS est la page d'administration accessible sur <a href="https://chinetech.netlify.app/admin/">/admin/</a>.
+              C'est là qu'une personne non technique peut écrire un article avec un formulaire.
+              Elle n'a pas besoin de connaître le code, ni d'ouvrir GitHub.
+            </p>
+            <p>
+              Quand l'article est sauvegardé, Decap CMS prépare le changement et l'envoie vers GitHub.
+              Ensuite Netlify publie la nouvelle version du site.
+            </p>
+          </article>
+
+          <article class="story-item">
+            <h3>Netlify Identity : le badge d'entrée</h3>
+            <p>
+              Netlify Identity sert à savoir qui a le droit d'entrer dans le CMS.
+              Une personne invitée reçoit un email, crée son mot de passe, puis peut se connecter à <code>/admin/</code>.
+            </p>
+            <p>
+              Important : il ne faut pas créer un compte Netlify complet pour chaque rédacteur.
+              Pour écrire des articles, une invitation Identity suffit.
+            </p>
+          </article>
+
+          <article class="story-item">
+            <h3>Git Gateway : le coursier discret</h3>
+            <p>
+              Git Gateway est le lien entre le CMS et GitHub. Quand un rédacteur clique sur sauvegarder,
+              Git Gateway transporte le changement vers l'armoire GitHub.
+            </p>
+            <p>
+              Normalement, un rédacteur ne voit presque jamais Git Gateway. Il doit seulement savoir que
+              si le CMS n'arrive plus à publier, Git Gateway fait partie des éléments à vérifier dans Netlify.
+            </p>
+          </article>
+
+          <article class="story-item">
+            <h3>Astro : la machine de mise en page</h3>
+            <p>
+              Astro est l'outil qui transforme les fichiers du projet en pages web rapides.
+              Il prend les articles, les styles, les pages et les assemble pour produire le site final.
+            </p>
+            <p>
+              Une personne non technique n'a pas besoin d'utiliser Astro directement. Il travaille en arrière-plan
+              pendant le déploiement Netlify.
+            </p>
+          </article>
+
+          <article class="story-item">
+            <h3>Codex : l'assistant pour modifier l'atelier</h3>
+            <p>
+              Codex sert quand il faut changer le site lui-même : modifier la page d'accueil, corriger un bug,
+              changer un style, ajouter une page, ajuster le CMS ou produire un document comme celui-ci.
+            </p>
+            <p>
+              Pour un article normal, on utilise le CMS. Pour changer le fonctionnement ou l'apparence du site,
+              on demande à Codex de modifier le code dans GitHub.
+            </p>
+          </article>
+        </div>
 
         <div class="callout">
-          <strong>Différence GitHub / Netlify :</strong> GitHub garde les fichiers.
-          Netlify affiche le site au public. GitHub est la réserve, Netlify est la vitrine.
+          <strong>Résumé très court :</strong> GitHub garde, Netlify publie,
+          Decap CMS permet d'écrire, Identity ouvre la porte, Git Gateway transporte,
+          Astro assemble, Codex modifie le site quand on lui demande.
         </div>
       </section>
 
       <section class="section" id="comptes">
         <h2>Quels comptes créer ?</h2>
         <p class="lead">
-          Il ne faut pas créer tous les comptes pour tout le monde. Chaque personne doit avoir seulement ce dont elle a besoin.
+          Il ne faut pas créer tous les comptes pour tout le monde. Chaque personne doit avoir seulement
+          les accès qui correspondent à son rôle.
         </p>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Personne</th>
-              <th>Compte recommandé</th>
-              <th>Pourquoi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Propriétaire du projet</td>
-              <td>GitHub + Netlify + ChatGPT/Codex</td>
-              <td>Il gère le site, les accès, les déploiements et les demandes de modifications.</td>
-            </tr>
-            <tr>
-              <td>Rédacteur non technique</td>
-              <td>Netlify Identity uniquement</td>
-              <td>Il écrit dans le CMS. Il n'a pas besoin d'aller sur GitHub.</td>
-            </tr>
-            <tr>
-              <td>Personne qui va demander des changements à Codex</td>
-              <td>GitHub + ChatGPT/Codex</td>
-              <td>Codex doit pouvoir lire/modifier le projet dans GitHub.</td>
-            </tr>
-            <tr>
-              <td>Lecteur ou abonné newsletter</td>
-              <td>Aucun compte</td>
-              <td>Il lit le site et peut laisser son email.</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="plain-list">
+          <div>
+            <h3>Le propriétaire du projet</h3>
+            <p>
+              Le propriétaire doit avoir un compte GitHub, un compte Netlify et un accès ChatGPT/Codex.
+              C'est la personne qui peut gérer le site, inviter quelqu'un, vérifier les déploiements
+              et demander des changements plus profonds.
+            </p>
+            <p>
+              C'est l'équivalent du directeur de publication : il n'écrit pas forcément tous les articles,
+              mais il garde les clés principales.
+            </p>
+          </div>
+
+          <div>
+            <h3>Le rédacteur non technique</h3>
+            <p>
+              Un rédacteur qui écrit seulement des articles n'a pas besoin d'un compte GitHub.
+              Il a besoin d'une invitation Netlify Identity pour entrer dans le CMS sur <code>/admin/</code>.
+            </p>
+            <p>
+              Pour lui, le site fonctionne comme un outil de rédaction : il se connecte, crée un article,
+              écrit son texte, sauvegarde, puis attend la publication.
+            </p>
+          </div>
+
+          <div>
+            <h3>La personne qui demande des changements à Codex</h3>
+            <p>
+              Si quelqu'un doit demander à Codex de modifier le site, cette personne doit pouvoir accéder au projet GitHub.
+              Codex a besoin de lire les fichiers du site et, si on lui demande, de proposer ou pousser des changements.
+            </p>
+            <p>
+              Dans ce cas, il faut un compte GitHub et un accès ChatGPT/Codex.
+              Netlify n'est nécessaire que si cette personne doit aussi gérer le déploiement ou les invitations.
+            </p>
+          </div>
+
+          <div>
+            <h3>Le lecteur ou l'abonné newsletter</h3>
+            <p>
+              Un lecteur n'a aucun compte à créer. Il lit le site public.
+              S'il s'inscrit à la newsletter, il donne seulement son email dans le formulaire.
+            </p>
+          </div>
+        </div>
 
         <h3>Créer un compte GitHub</h3>
         <ol>
@@ -605,40 +669,52 @@
         </div>
 
         <h3>Les mots à connaître</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Mot</th>
-              <th>Version simple</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Repository</strong></td>
-              <td>Le dossier du projet sur GitHub.</td>
-            </tr>
-            <tr>
-              <td><strong>Commit</strong></td>
-              <td>Une sauvegarde nommée d'un changement.</td>
-            </tr>
-            <tr>
-              <td><strong>Branch</strong></td>
-              <td>Une copie de travail pour tester sans abîmer la version principale.</td>
-            </tr>
-            <tr>
-              <td><strong>Push</strong></td>
-              <td>Envoyer ses changements vers GitHub.</td>
-            </tr>
-            <tr>
-              <td><strong>Pull request</strong></td>
-              <td>Demander une relecture avant d'intégrer un changement.</td>
-            </tr>
-            <tr>
-              <td><strong>Markdown</strong></td>
-              <td>Une façon simple d'écrire du texte avec des titres, listes et liens.</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="plain-list">
+          <div>
+            <h3>Repository</h3>
+            <p>
+              Le repository, souvent appelé repo, est le dossier du projet sur GitHub.
+              Pour CHINETECH, c'est l'endroit où sont rangés le site, les articles, la configuration du CMS
+              et les documents comme ce guide.
+            </p>
+          </div>
+          <div>
+            <h3>Commit</h3>
+            <p>
+              Un commit est une sauvegarde nommée. Quand on change quelque chose et qu'on veut garder une trace propre,
+              on crée un commit avec un message court, par exemple : "Simplifier le guide d'utilisation".
+            </p>
+          </div>
+          <div>
+            <h3>Branch</h3>
+            <p>
+              Une branch est une copie de travail. Elle permet de tester une modification sans toucher directement
+              à la version principale du site. Pour ce projet, la version publiée part de la branche <code>master</code>.
+            </p>
+          </div>
+          <div>
+            <h3>Push</h3>
+            <p>
+              Push veut dire envoyer les changements vers GitHub. Une fois le push fait, Netlify voit le changement
+              et peut publier automatiquement la nouvelle version du site.
+            </p>
+          </div>
+          <div>
+            <h3>Pull request</h3>
+            <p>
+              Une pull request est une demande de relecture avant d'intégrer un changement.
+              C'est utile quand plusieurs personnes travaillent ensemble et qu'on veut vérifier avant de publier.
+            </p>
+          </div>
+          <div>
+            <h3>Markdown</h3>
+            <p>
+              Markdown est une façon simple d'écrire du texte. On peut faire des titres, des listes,
+              des liens et des paragraphes sans utiliser un logiciel compliqué.
+              Les articles du blog sont stockés dans ce format.
+            </p>
+          </div>
+        </div>
 
         <div class="callout">
           <strong>Pour un non-technicien :</strong> il n'est pas nécessaire de manipuler Git.
@@ -666,36 +742,44 @@
         </ol>
 
         <h3>Les champs les plus importants</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Champ</th>
-              <th>À quoi ça sert</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>title</code></td>
-              <td>Le titre de l'article.</td>
-            </tr>
-            <tr>
-              <td><code>description</code></td>
-              <td>Le résumé court qui donne envie de lire.</td>
-            </tr>
-            <tr>
-              <td><code>tags</code></td>
-              <td>Les catégories : Tech, IA, Business, Société, etc.</td>
-            </tr>
-            <tr>
-              <td><code>draft</code></td>
-              <td><code>true</code> = invisible. <code>false</code> = publié.</td>
-            </tr>
-            <tr>
-              <td><code>featured</code></td>
-              <td>Mettre l'article dans la section "À la une".</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="story">
+          <article class="story-item">
+            <h3>Title</h3>
+            <p>
+              <code>title</code> est le titre visible de l'article. Il doit être clair avant d'être brillant.
+              Un bon titre permet de comprendre le sujet sans lire le reste.
+            </p>
+          </article>
+          <article class="story-item">
+            <h3>Description</h3>
+            <p>
+              <code>description</code> est le résumé court. C'est la phrase qui aide le lecteur à décider
+              s'il veut ouvrir l'article. Elle doit expliquer l'intérêt du sujet, pas répéter exactement le titre.
+            </p>
+          </article>
+          <article class="story-item">
+            <h3>Tags</h3>
+            <p>
+              <code>tags</code> sert à classer l'article. Par exemple : IA, Business, Société, Puces, Mobilité.
+              Il vaut mieux quelques tags cohérents qu'une longue liste vague.
+            </p>
+          </article>
+          <article class="story-item">
+            <h3>Draft</h3>
+            <p>
+              <code>draft</code> contrôle la visibilité. Si <code>draft</code> vaut <code>true</code>,
+              l'article reste invisible sur le site public. Quand l'article est prêt, on passe à <code>false</code>.
+            </p>
+          </article>
+          <article class="story-item">
+            <h3>Featured</h3>
+            <p>
+              <code>featured</code> permet de mettre un article en avant sur la page d'accueil.
+              À utiliser seulement pour les articles vraiment importants, sinon la section "À la une"
+              perd son sens.
+            </p>
+          </article>
+        </div>
 
         <h3>Mini-recette d'un bon article</h3>
         <ul class="checklist">
@@ -842,36 +926,48 @@ Texte :
         </ul>
 
         <h3>Problèmes fréquents</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Problème</th>
-              <th>Réponse simple</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Le lien d'invitation ne marche pas</td>
-              <td>Renvoyer une nouvelle invitation. Les anciens liens expirent ou se consomment.</td>
-            </tr>
-            <tr>
-              <td>Rate limit exceeded</td>
-              <td>Attendre 30 à 60 minutes. Ne pas cliquer plusieurs fois.</td>
-            </tr>
-            <tr>
-              <td>L'article n'apparaît pas</td>
-              <td>Vérifier <code>draft</code>, puis attendre le build Netlify.</td>
-            </tr>
-            <tr>
-              <td>Le site affiche 404</td>
-              <td>Vérifier l'orthographe : <code>chinetech.netlify.app</code>.</td>
-            </tr>
-            <tr>
-              <td>Le CMS ne publie pas</td>
-              <td>Vérifier Identity et Git Gateway dans Netlify.</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="plain-list">
+          <div>
+            <h3>Le lien d'invitation ne marche pas</h3>
+            <p>
+              Un lien d'invitation peut expirer ou être consommé après utilisation.
+              La solution la plus simple est de renvoyer une nouvelle invitation depuis Netlify Identity.
+              Il faut ensuite utiliser le lien le plus récent.
+            </p>
+          </div>
+          <div>
+            <h3>Rate limit exceeded</h3>
+            <p>
+              Ce message veut dire que trop de demandes ont été faites en peu de temps,
+              par exemple trop d'emails de récupération de mot de passe.
+              Il faut attendre 30 à 60 minutes, puis refaire une seule demande.
+            </p>
+          </div>
+          <div>
+            <h3>L'article n'apparaît pas</h3>
+            <p>
+              La première chose à vérifier est <code>draft</code>. Si <code>draft</code> vaut <code>true</code>,
+              l'article est volontairement caché. Si <code>draft</code> vaut <code>false</code>,
+              il faut attendre que Netlify finisse de publier le site.
+            </p>
+          </div>
+          <div>
+            <h3>Le site affiche 404</h3>
+            <p>
+              Vérifier d'abord l'adresse exacte : <code>chinetech.netlify.app</code>.
+              Une lettre manquante suffit à tomber sur une page introuvable.
+              Si l'adresse est bonne, regarder ensuite le dernier déploiement Netlify.
+            </p>
+          </div>
+          <div>
+            <h3>Le CMS ne publie pas</h3>
+            <p>
+              Si le CMS s'ouvre mais n'arrive pas à sauvegarder, il faut vérifier Netlify Identity et Git Gateway.
+              En langage simple : l'utilisateur doit avoir le droit d'entrer, et le coursier doit pouvoir envoyer
+              l'article vers GitHub.
+            </p>
+          </div>
+        </div>
       </section>
 
       <section class="section" id="sources">
