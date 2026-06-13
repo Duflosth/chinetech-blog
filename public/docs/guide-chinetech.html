@@ -264,6 +264,16 @@
         margin: 10px 0 0;
       }
 
+      .explain-label {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--red-dark);
+        font-family: var(--mono);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
       .plain-list {
         display: grid;
         gap: 14px;
@@ -474,49 +484,83 @@
           <article class="story-item">
             <h3>GitHub : l'armoire officielle</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               GitHub est l'endroit où le projet vit réellement. Il garde les fichiers du site,
               les articles, les images importantes et l'historique des changements. Dans notre métaphore,
               c'est l'armoire officielle du magazine : si quelque chose est dans GitHub, le projet peut le retrouver.
             </p>
             <p>
-              C'est aussi une machine à remonter le temps. Quand quelqu'un modifie le site, GitHub garde une trace.
-              On peut donc comprendre qui a changé quoi, quand, et pourquoi.
+              <span class="explain-label">Contexte de création</span>
+              Les projets web ont besoin d'un endroit commun où plusieurs personnes peuvent travailler sans écraser
+              le travail des autres. GitHub répond à ce besoin : garder le code, garder les versions, et permettre
+              de revenir en arrière si une erreur est faite.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Si Codex modifie la page d'accueil, GitHub conserve cette modification avec un message.
+              Plus tard, on peut retrouver ce changement et comprendre ce qui a été fait.
             </p>
           </article>
 
           <article class="story-item">
             <h3>Netlify : l'imprimeur et la vitrine</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Netlify prend ce qui est rangé dans GitHub et le transforme en site visible par le public.
               Dès qu'un changement est envoyé dans GitHub, Netlify reconstruit le site et le met en ligne.
             </p>
             <p>
-              La différence est simple : GitHub garde les fichiers, Netlify montre le résultat.
-              GitHub est la réserve du magasin. Netlify est la vitrine que les visiteurs voient.
+              <span class="explain-label">Contexte de création</span>
+              Avant ce type de service, publier un site demandait souvent de gérer soi-même un serveur.
+              Netlify simplifie cela : on branche le site à GitHub, et la publication devient automatique.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Quand un article passe de <code>draft: true</code> à <code>draft: false</code>, Netlify reconstruit
+              le site. Après quelques instants, l'article apparaît sur <a href="https://chinetech.netlify.app/">chinetech.netlify.app</a>.
             </p>
           </article>
 
           <article class="story-item">
             <h3>Decap CMS : le bureau de rédaction</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Decap CMS est la page d'administration accessible sur <a href="https://chinetech.netlify.app/admin/">/admin/</a>.
               C'est là qu'une personne non technique peut écrire un article avec un formulaire.
               Elle n'a pas besoin de connaître le code, ni d'ouvrir GitHub.
             </p>
             <p>
-              Quand l'article est sauvegardé, Decap CMS prépare le changement et l'envoie vers GitHub.
-              Ensuite Netlify publie la nouvelle version du site.
+              <span class="explain-label">Contexte de création</span>
+              Un site statique est rapide et simple à héberger, mais écrire directement dans les fichiers peut être
+              intimidant. Un CMS sert à donner une interface de rédaction claire au-dessus de ces fichiers.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Un rédacteur ouvre <code>/admin/</code>, clique sur "New Article", écrit son texte, sauvegarde,
+              puis le CMS envoie l'article vers GitHub.
             </p>
           </article>
 
           <article class="story-item">
             <h3>Netlify Identity : le badge d'entrée</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Netlify Identity sert à savoir qui a le droit d'entrer dans le CMS.
               Une personne invitée reçoit un email, crée son mot de passe, puis peut se connecter à <code>/admin/</code>.
             </p>
             <p>
-              Important : il ne faut pas créer un compte Netlify complet pour chaque rédacteur.
+              <span class="explain-label">Contexte de création</span>
+              Un espace d'administration ne doit pas être ouvert à tout le monde. Identity apporte une porte d'entrée :
+              seules les personnes invitées peuvent créer ou modifier des articles.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Pour ajouter un rédacteur, le propriétaire va dans Netlify, ouvre Identity, envoie une invitation email,
+              et le rédacteur choisit son mot de passe.
+            </p>
+            <p>
+              <span class="explain-label">À retenir</span>
+              Il ne faut pas créer un compte Netlify complet pour chaque rédacteur.
               Pour écrire des articles, une invitation Identity suffit.
             </p>
           </article>
@@ -524,36 +568,57 @@
           <article class="story-item">
             <h3>Git Gateway : le coursier discret</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Git Gateway est le lien entre le CMS et GitHub. Quand un rédacteur clique sur sauvegarder,
               Git Gateway transporte le changement vers l'armoire GitHub.
             </p>
             <p>
-              Normalement, un rédacteur ne voit presque jamais Git Gateway. Il doit seulement savoir que
-              si le CMS n'arrive plus à publier, Git Gateway fait partie des éléments à vérifier dans Netlify.
+              <span class="explain-label">Contexte de création</span>
+              Un rédacteur CMS ne doit pas avoir à manipuler GitHub directement. Git Gateway existe pour permettre
+              au CMS d'envoyer des changements dans GitHub au nom d'un utilisateur autorisé.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Si un article est sauvegardé dans le CMS, Git Gateway crée le changement côté GitHub.
+              Si la sauvegarde échoue, c'est un des premiers réglages à vérifier dans Netlify.
             </p>
           </article>
 
           <article class="story-item">
             <h3>Astro : la machine de mise en page</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Astro est l'outil qui transforme les fichiers du projet en pages web rapides.
               Il prend les articles, les styles, les pages et les assemble pour produire le site final.
             </p>
             <p>
-              Une personne non technique n'a pas besoin d'utiliser Astro directement. Il travaille en arrière-plan
-              pendant le déploiement Netlify.
+              <span class="explain-label">Contexte de création</span>
+              Les sites modernes ont besoin d'être rapides, organisés et faciles à maintenir.
+              Astro sert à fabriquer des pages statiques propres à partir de composants et de contenus.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Quand Netlify lance la publication, Astro prend les fichiers Markdown des articles et fabrique
+              les pages visibles dans la rubrique Articles.
             </p>
           </article>
 
           <article class="story-item">
             <h3>Codex : l'assistant pour modifier l'atelier</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Codex sert quand il faut changer le site lui-même : modifier la page d'accueil, corriger un bug,
               changer un style, ajouter une page, ajuster le CMS ou produire un document comme celui-ci.
             </p>
             <p>
-              Pour un article normal, on utilise le CMS. Pour changer le fonctionnement ou l'apparence du site,
-              on demande à Codex de modifier le code dans GitHub.
+              <span class="explain-label">Contexte de création</span>
+              Modifier un site demande souvent de comprendre plusieurs fichiers. Codex sert d'assistant de code :
+              on lui décrit le résultat voulu, il lit le projet, propose les modifications et vérifie que ça fonctionne.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Si tu veux changer la section newsletter, tu demandes à Codex : "change ce texte, ne casse pas le formulaire,
+              lance le build, puis pousse si tout est bon".
             </p>
           </article>
         </div>
@@ -576,45 +641,76 @@
           <div>
             <h3>Le propriétaire du projet</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Le propriétaire doit avoir un compte GitHub, un compte Netlify et un accès ChatGPT/Codex.
               C'est la personne qui peut gérer le site, inviter quelqu'un, vérifier les déploiements
               et demander des changements plus profonds.
             </p>
             <p>
+              <span class="explain-label">Contexte de création</span>
               C'est l'équivalent du directeur de publication : il n'écrit pas forcément tous les articles,
               mais il garde les clés principales.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Si un rédacteur perd son accès, le propriétaire peut renvoyer une invitation depuis Netlify
+              et vérifier ensuite que le CMS fonctionne.
             </p>
           </div>
 
           <div>
             <h3>Le rédacteur non technique</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Un rédacteur qui écrit seulement des articles n'a pas besoin d'un compte GitHub.
               Il a besoin d'une invitation Netlify Identity pour entrer dans le CMS sur <code>/admin/</code>.
             </p>
             <p>
+              <span class="explain-label">Contexte de création</span>
               Pour lui, le site fonctionne comme un outil de rédaction : il se connecte, crée un article,
               écrit son texte, sauvegarde, puis attend la publication.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Il prépare un article en brouillon, laisse <code>draft: true</code>, puis le passe à <code>false</code>
+              seulement quand le texte est relu.
             </p>
           </div>
 
           <div>
             <h3>La personne qui demande des changements à Codex</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Si quelqu'un doit demander à Codex de modifier le site, cette personne doit pouvoir accéder au projet GitHub.
               Codex a besoin de lire les fichiers du site et, si on lui demande, de proposer ou pousser des changements.
             </p>
             <p>
+              <span class="explain-label">Contexte de création</span>
               Dans ce cas, il faut un compte GitHub et un accès ChatGPT/Codex.
               Netlify n'est nécessaire que si cette personne doit aussi gérer le déploiement ou les invitations.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Elle peut demander à Codex : "ajoute un paragraphe sur la page d'accueil, vérifie avec <code>npm run build</code>,
+              puis pousse sur GitHub".
             </p>
           </div>
 
           <div>
             <h3>Le lecteur ou l'abonné newsletter</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Un lecteur n'a aucun compte à créer. Il lit le site public.
               S'il s'inscrit à la newsletter, il donne seulement son email dans le formulaire.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Le site public doit rester simple : les visiteurs n'ont pas besoin d'un accès interne pour lire.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Une personne lit un article sur <a href="https://chinetech.netlify.app/">chinetech.netlify.app</a>
+              et peut laisser son email sans créer de compte.
             </p>
           </div>
         </div>
@@ -655,15 +751,35 @@
           <div class="mini-card">
             <h3>Git</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Git est comme un carnet de bord. À chaque changement important,
               on prend une photo de l'état du projet. Cette photo s'appelle un commit.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Git existe parce qu'un projet change souvent, et qu'il faut garder un historique fiable
+              sans se perdre dans des copies de fichiers.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Après une modification du guide, on crée un commit pour garder une trace claire de ce changement.
             </p>
           </div>
           <div class="mini-card">
             <h3>GitHub</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               GitHub est le bâtiment où l'on range ce carnet de bord.
               Il permet aussi à plusieurs personnes ou assistants de travailler sans perdre l'historique.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Git tout seul vit sur un ordinateur. GitHub ajoute un lieu partagé en ligne,
+              pratique pour collaborer, relire, publier et connecter Netlify.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Le repo <code>Duflosth/chinetech-blog</code> est la version officielle du projet CHINETECH.
             </p>
           </div>
         </div>
@@ -673,45 +789,100 @@
           <div>
             <h3>Repository</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Le repository, souvent appelé repo, est le dossier du projet sur GitHub.
               Pour CHINETECH, c'est l'endroit où sont rangés le site, les articles, la configuration du CMS
               et les documents comme ce guide.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Il faut un endroit unique qui contient tout ce qui compose le projet, sinon les fichiers se dispersent.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Quand Codex travaille sur CHINETECH, il doit ouvrir le repo du blog, pas un autre dossier.
             </p>
           </div>
           <div>
             <h3>Commit</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Un commit est une sauvegarde nommée. Quand on change quelque chose et qu'on veut garder une trace propre,
               on crée un commit avec un message court, par exemple : "Simplifier le guide d'utilisation".
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Sans commit, on ne sait pas précisément quand une modification a été faite ni pourquoi.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Après avoir changé cette documentation, on crée un commit du type "Clarify service explanations".
             </p>
           </div>
           <div>
             <h3>Branch</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Une branch est une copie de travail. Elle permet de tester une modification sans toucher directement
               à la version principale du site. Pour ce projet, la version publiée part de la branche <code>master</code>.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Quand plusieurs idées sont testées en même temps, il faut pouvoir les isoler pour ne pas casser
+              la version publique.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Pour une grosse refonte visuelle, on peut travailler sur une branche séparée avant de publier.
             </p>
           </div>
           <div>
             <h3>Push</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Push veut dire envoyer les changements vers GitHub. Une fois le push fait, Netlify voit le changement
               et peut publier automatiquement la nouvelle version du site.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Un changement fait sur un ordinateur ou par Codex doit rejoindre GitHub pour devenir officiel.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Quand Codex pousse une modification sur <code>master</code>, Netlify démarre un nouveau déploiement.
             </p>
           </div>
           <div>
             <h3>Pull request</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Une pull request est une demande de relecture avant d'intégrer un changement.
               C'est utile quand plusieurs personnes travaillent ensemble et qu'on veut vérifier avant de publier.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Sur un projet à plusieurs, il faut parfois relire avant de fusionner une modification dans la version principale.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Si une personne propose une nouvelle page, on peut ouvrir une pull request pour la relire avant publication.
             </p>
           </div>
           <div>
             <h3>Markdown</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               Markdown est une façon simple d'écrire du texte. On peut faire des titres, des listes,
               des liens et des paragraphes sans utiliser un logiciel compliqué.
               Les articles du blog sont stockés dans ce format.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Markdown existe pour écrire du contenu lisible à la fois par un humain et par un site web.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Dans un article, écrire <code>## Conclusion</code> crée un titre de section.
             </p>
           </div>
         </div>
@@ -727,6 +898,27 @@
         <p class="lead">
           Le bon chemin pour écrire est le CMS : <a href="https://chinetech.netlify.app/admin/">chinetech.netlify.app/admin/</a>.
         </p>
+
+        <div class="story">
+          <article class="story-item">
+            <h3>Pourquoi écrire dans le CMS ?</h3>
+            <p>
+              <span class="explain-label">Explication générale</span>
+              Le CMS est l'outil normal pour écrire un article. Il présente un formulaire clair,
+              puis transforme le contenu en fichier utilisable par le site.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Sans CMS, il faudrait ouvrir les fichiers du projet et écrire directement en Markdown.
+              C'est possible, mais ce n'est pas confortable pour une personne non technique.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Pour publier un article sur DeepSeek, le rédacteur ouvre <code>/admin/</code>,
+              crée un nouvel article, écrit son texte, puis passe <code>draft</code> à <code>false</code>.
+            </p>
+          </article>
+        </div>
 
         <h3>Créer un article</h3>
         <ol>
@@ -746,37 +938,83 @@
           <article class="story-item">
             <h3>Title</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               <code>title</code> est le titre visible de l'article. Il doit être clair avant d'être brillant.
               Un bon titre permet de comprendre le sujet sans lire le reste.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Un site a besoin d'un titre pour afficher l'article dans les listes, les pages et les aperçus.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              "DeepSeek change-t-il vraiment le coût de l'IA ?" est plus utile que "Révolution IA".
             </p>
           </article>
           <article class="story-item">
             <h3>Description</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               <code>description</code> est le résumé court. C'est la phrase qui aide le lecteur à décider
               s'il veut ouvrir l'article. Elle doit expliquer l'intérêt du sujet, pas répéter exactement le titre.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              La description sert dans les cartes d'article et peut aider au partage du lien.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              "Le modèle chinois interroge la façon dont les laboratoires réduisent leurs coûts d'entraînement."
             </p>
           </article>
           <article class="story-item">
             <h3>Tags</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               <code>tags</code> sert à classer l'article. Par exemple : IA, Business, Société, Puces, Mobilité.
               Il vaut mieux quelques tags cohérents qu'une longue liste vague.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Les tags aident à retrouver les sujets et à comprendre rapidement la famille d'un article.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Pour un article sur les semi-conducteurs chinois : <code>IA</code>, <code>Puces</code>, <code>Industrie</code>.
             </p>
           </article>
           <article class="story-item">
             <h3>Draft</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               <code>draft</code> contrôle la visibilité. Si <code>draft</code> vaut <code>true</code>,
               l'article reste invisible sur le site public. Quand l'article est prêt, on passe à <code>false</code>.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Un rédacteur doit pouvoir préparer un texte sans le publier immédiatement.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Pendant la relecture, garder <code>draft: true</code>. Après validation, mettre <code>draft: false</code>.
             </p>
           </article>
           <article class="story-item">
             <h3>Featured</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               <code>featured</code> permet de mettre un article en avant sur la page d'accueil.
               À utiliser seulement pour les articles vraiment importants, sinon la section "À la une"
               perd son sens.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              La page d'accueil ne peut pas tout montrer. Le champ <code>featured</code> sert à choisir les articles prioritaires.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Un article de fond sur la stratégie chinoise de l'IA peut être mis en avant.
+              Une brève correction ne devrait pas l'être.
             </p>
           </article>
         </div>
@@ -799,23 +1037,45 @@
         </p>
 
         <h3>Deux façons d'utiliser Codex</h3>
-        <div class="grid">
-          <div class="mini-card">
+        <div class="story">
+          <article class="story-item">
             <span class="tag">Plus simple</span>
             <h3>Codex dans ChatGPT</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               On connecte GitHub, on choisit le projet, puis on demande une modification.
               C'est le plus adapté pour une personne peu technique.
             </p>
-          </div>
-          <div class="mini-card">
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              L'objectif est de pouvoir demander un changement en langage naturel, sans ouvrir soi-même les fichiers.
+              Codex lit le projet, modifie ce qui est nécessaire et peut expliquer ce qu'il a changé.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              "Dans le repo CHINETECH, modifie le texte de la newsletter, vérifie avec <code>npm run build</code>,
+              puis pousse si tout passe."
+            </p>
+          </article>
+          <article class="story-item">
             <span class="tag tag--yellow">Plus avancé</span>
             <h3>Codex dans le terminal</h3>
             <p>
+              <span class="explain-label">Explication générale</span>
               On travaille depuis l'ordinateur, dans le dossier du projet.
               C'est utile pour quelqu'un qui sait déjà ouvrir un terminal.
             </p>
-          </div>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Le terminal donne plus de contrôle : on peut lancer les commandes, voir les fichiers,
+              tester localement et pousser les changements soi-même.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Une personne technique ouvre le dossier du projet, lance Codex, demande une modification,
+              puis vérifie le résultat avec le navigateur et <code>npm run build</code>.
+            </p>
+          </article>
         </div>
 
         <h3>Quand utiliser Codex ?</h3>
@@ -860,6 +1120,27 @@ Pousse sur master si tout passe.</div>
         <p class="lead">
           ChatGPT ou un autre LLM peut aider à préparer un article, mais il ne doit pas inventer les faits.
         </p>
+
+        <div class="story">
+          <article class="story-item">
+            <h3>À quoi sert un LLM ici ?</h3>
+            <p>
+              <span class="explain-label">Explication générale</span>
+              Un LLM sert à réfléchir, structurer, reformuler et préparer un brouillon.
+              Il peut aider à rendre un article plus clair, mais il ne remplace pas la vérification humaine.
+            </p>
+            <p>
+              <span class="explain-label">Contexte de création</span>
+              Les outils de rédaction IA sont utiles parce qu'ils accélèrent les tâches répétitives :
+              proposer un plan, trouver un angle, améliorer une phrase, repérer les points flous.
+            </p>
+            <p>
+              <span class="explain-label">Exemple</span>
+              Pour un article sur les taxis volants à Guangzhou, on peut demander un plan en trois parties,
+              puis vérifier séparément les chiffres, dates et entreprises citées.
+            </p>
+          </article>
+        </div>
 
         <h3>Bon usage</h3>
         <ul class="checklist">
