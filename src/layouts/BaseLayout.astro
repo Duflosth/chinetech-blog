@@ -19,7 +19,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{title}</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
     <header class="topbar">
@@ -100,7 +100,13 @@ const {
       });
 
       if (window.netlifyIdentity) {
+        const identityTokenPattern = /(?:confirmation|invite|recovery|email_change)_token=/;
+
         window.netlifyIdentity.on('init', (user) => {
+          if (identityTokenPattern.test(window.location.hash)) {
+            window.netlifyIdentity.open();
+          }
+
           if (!user) {
             window.netlifyIdentity.on('login', () => {
               document.location.href = '/admin/';
